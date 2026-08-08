@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codi de Conducta en Xarxes Socials · ACAMPA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50;line-height:1.6}
+.page{max-width:780px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden}
+.header{background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;padding:32px 24px;text-align:center}
+.header img{height:58px;margin-bottom:10px}
+.header h1{font-size:1.3rem}
+.header .code{display:inline-block;margin-top:8px;background:rgba(255,255,255,.18);padding:3px 16px;border-radius:16px;font-size:.8rem}
+form{padding:28px 40px}
+fieldset{border:1px solid #d5dbdb;border-radius:8px;padding:18px 20px;margin-bottom:22px}
+legend{font-weight:700;color:#8e44ad;padding:0 8px}
+label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4px;color:#1a5276}
+input[type=text],input[type=email],input[type=date],select{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe}
+.row{display:flex;gap:16px}.row>div{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
+.check input{margin-top:3px;flex-shrink:0}
+.info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+button{width:100%;background:#8e44ad;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
+button:hover{background:#9b59b6}
+.footer{background:#1a5276;color:#fff;text-align:center;padding:12px;font-size:.76rem}
+.gate{border:2px solid #e74c3c;background:#fdedec;text-align:center}
+.gate legend{color:#e74c3c;font-size:1.1rem}
+.gate input{text-align:center;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase}
+.btn-unlock{background:#e74c3c!important;margin-top:12px}
+.btn-unlock:hover{background:#c0392b!important}
+#error-msg{color:#e74c3c;font-size:.85rem;margin-top:10px;display:none;font-weight:600}
+.prohibitions{background:#fdedec;border-left:4px solid #e74c3c;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.prohibitions ul{padding-left:18px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img src="https://i.postimg.cc/0K95v8Lm/logo.png" alt="ACAMPA">
+    <h1>Codi de Conducta en Xarxes Socials</h1>
+    <div class="code">MAN-ETI-006 · Annex al Codi Ètic · v1.0</div>
+  </div>
+
+  <form method="POST">
+    <input type="hidden" name="_subject" value="📱 Nou Codi de Conducta en Xarxes Socials signat">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el teu Codi de Conducta en Xarxes Socials. Gràcies per representar l'entitat amb responsabilitat!">
+    <input type="text" name="_honey" style="display:none">
+    <input type="hidden" name="formulari" value="Codi de Conducta en Xarxes Socials (MAN-ETI-006)">
+
+    <!-- 🔒 PANY D'ACCÉS -->
+    <fieldset class="gate" id="access-gate">
+      <legend>🔒 Accés Restringit</legend>
+      <label style="color:#555;font-weight:normal;margin-bottom:15px;">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat ACAMPA.</label>
+      <input type="text" id="access-code-input" placeholder="Codi d'accés" autocomplete="off" required>
+      <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
+      <p id="error-msg"></p>
+    </fieldset>
+
+    <!-- 📝 CONTINGUT DEL FORMULARI -->
+    <div id="form-content" style="display:none;">
+
+      <fieldset>
+        <legend>1 · Dades de la persona signant</legend>
+        <label class="main-label">Nom i cognoms *</label>
+        <input type="text" name="nom_cognoms" required>
+        <div class="row">
+          <div><label class="main-label">DNI / NIF / NIE *</label><input type="text" name="dni" required></div>
+          <div><label class="main-label">Correu electrònic *</label><input type="email" name="email" required></div>
+        </div>
+        <div class="row">
+          <div>
+            <label class="main-label">Col·lectiu *</label>
+            <select name="collectiu" required>
+              <option value="">— Selecciona —</option>
+              <option>Junta Directiva</option>
+              <option>Voluntariat</option>
+              <option>Treballador/a</option>
+              <option>Soci/a</option>
+              <option>Professional col·laborador/a</option>
+            </select>
+          </div>
+          <div>
+            <label class="main-label">Gestiona comptes oficials d'ACAMPA?</label>
+            <select name="gestiona_comptes">
+              <option>No</option>
+              <option>Sí</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Principis generals de conducta digital (SEC-015)</legend>
+        <label class="check"><input type="checkbox" name="p_veracitat" value="SÍ" required><span><strong>Veracitat:</strong> compartir informació contrastada i no difondre notícies falses. *</span></label>
+        <label class="check"><input type="checkbox" name="p_respecte" value="SÍ" required><span><strong>Respecte:</strong> tractar totes les persones amb respecte, fins i tot en el desacord. *</span></label>
+        <label class="check"><input type="checkbox" name="p_coherencia" value="SÍ" required><span><strong>Coherència:</strong> reflectir els valors d'ACAMPA en tota la comunicació digital. *</span></label>
+        <label class="check"><input type="checkbox" name="p_inclusiu" value="SÍ" required><span><strong>Llenguatge inclusiu:</strong> utilitzar un llenguatge respectuós i no discriminatori. *</span></label>
+        <label class="check"><input type="checkbox" name="p_empatia" value="SÍ" required><span><strong>Empatia:</strong> recordar que darrere de cada pantalla hi ha una persona. *</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Comunicació personal</legend>
+        <div class="info">Quan em comunico en xarxes socials a títol personal però se'm pot associar a ACAMPA, em comprometo a distingir entre opinions personals i posicionaments oficials, i a no fer declaracions en nom de l'entitat sense autorització.</div>
+        <label class="check"><input type="checkbox" name="c_no_difondre_interna" value="SÍ" required><span>No difondre informació interna o confidencial de l'entitat. *</span></label>
+        <label class="check"><input type="checkbox" name="c_no_dades_beneficiaries" value="SÍ" required><span>No publicar dades personals o de salut de persones beneficiàries. *</span></label>
+        <label class="check"><input type="checkbox" name="c_consentiment_imatges" value="SÍ" required><span>No compartir imatges de persones sense el seu consentiment exprés. *</span></label>
+        <label class="check"><input type="checkbox" name="c_no_desacreditar" value="SÍ" required><span>No desacreditar públicament ACAMPA; les discrepàncies es resolen pels canals interns. *</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Prohibicions específiques</legend>
+        <div class="prohibitions">Queda <strong>expressament prohibit</strong>:
+          <ul>
+            <li>Publicar informació falsa en nom d'ACAMPA.</li>
+            <li>Difondre dades de salut de beneficiaris.</li>
+            <li>Assetjar, intimidar o menysprear persones.</li>
+            <li>Difondre contingut discriminatori.</li>
+            <li>Suplantar la identitat d'ACAMPA o d'altres persones.</li>
+            <li>Utilitzar els comptes oficials per a beneficis personals.</li>
+          </ul>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Acceptació i signatura</legend>
+        <div class="warn">⚠️ L'incompliment d'aquest Codi es gestionarà d'acord amb el règim disciplinari del Codi Ètic (SEC-018). Les conductes que constitueixin delicte seran comunicades a les autoritats competents.</div>
+        <label class="check"><input type="checkbox" name="accepta_codi" value="SÍ" required><span>He llegit i comprès el Codi de Conducta en Xarxes Socials i em comprometo a respectar-lo. *</span></label>
+        <label class="main-label" style="margin-top:16px;">Escriu el teu nom i cognoms com a signatura *</label>
+        <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
+        <label class="main-label">Data de signatura</label>
+        <input type="date" name="data_signatura" id="data_signatura" required>
+      </fieldset>
+
+      <button type="submit">📨 Enviar Codi de Conducta a ACAMPA</button>
+    </div>
+  </form>
+
+  <div class="footer">MAN-ETI-006 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  (function(){ const f=document.querySelector('form'); if(f&&typeof DEFAULT_EMAIL!=='undefined') f.action='https://formsubmit.co/'+DEFAULT_EMAIL; })();
+  const d=new Date(); const ds=document.getElementById('data_signatura');
+  if(ds) ds.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+
+  const unlockBtn=document.getElementById('unlock-btn'), codeInput=document.getElementById('access-code-input'), errorMsg=document.getElementById('error-msg'), gate=document.getElementById('access-gate'), content=document.getElementById('form-content');
+  function tryUnlock(){ const c=codeInput.value.trim().toUpperCase(); if(typeof ACCESS_CODES!=='undefined'&&ACCESS_CODES.map(x=>x.toUpperCase()).includes(c)){ gate.style.display='none'; content.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); } else { errorMsg.textContent=(typeof ERROR_MSG!=='undefined')?ERROR_MSG:"Codi incorrecte."; errorMsg.style.display='block'; codeInput.value=''; codeInput.focus(); } }
+  if(unlockBtn) unlockBtn.addEventListener('click',tryUnlock);
+  if(codeInput) codeInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Declaració de Conflictes d'Interessos · ACAMPA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50;line-height:1.6}
+.page{max-width:780px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden}
+.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:32px 24px;text-align:center}
+.header img{height:58px;margin-bottom:10px}
+.header h1{font-size:1.3rem}
+.header .code{display:inline-block;margin-top:8px;background:rgba(255,255,255,.18);padding:3px 16px;border-radius:16px;font-size:.8rem}
+form{padding:28px 40px}
+fieldset{border:1px solid #d5dbdb;border-radius:8px;padding:18px 20px;margin-bottom:22px}
+legend{font-weight:700;color:#1a5276;padding:0 8px}
+label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4px;color:#1a5276}
+input[type=text],input[type=email],input[type=date],select,textarea{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe;font-family:inherit}
+textarea{min-height:60px;resize:vertical}
+.row{display:flex;gap:16px}.row>div{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
+.check input{margin-top:3px;flex-shrink:0}
+.info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+button{width:100%;background:#1a5276;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
+button:hover{background:#2980b9}
+.footer{background:#1a5276;color:#fff;text-align:center;padding:12px;font-size:.76rem}
+.gate{border:2px solid #e74c3c;background:#fdedec;text-align:center}
+.gate legend{color:#e74c3c;font-size:1.1rem}
+.gate input{text-align:center;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase}
+.btn-unlock{background:#e74c3c!important;margin-top:12px}
+.btn-unlock:hover{background:#c0392b!important}
+#error-msg{color:#e74c3c;font-size:.85rem;margin-top:10px;display:none;font-weight:600}
+.q-block{background:#fafafa;border:1px solid #eee;border-radius:6px;padding:14px;margin:12px 0}
+.q-text{font-size:.92rem;font-weight:600;margin-bottom:8px;color:#34495e}
+.radio-group{display:flex;gap:20px;margin-bottom:8px}
+.radio-group label{font-size:.9rem;font-weight:500;display:flex;align-items:center;gap:6px;cursor:pointer}
+.radio-group input{cursor:pointer}
+.detail-input{margin-top:6px;display:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img src="https://i.postimg.cc/0K95v8Lm/logo.png" alt="ACAMPA">
+    <h1>Declaració de Conflictes d'Interessos</h1>
+    <div class="code">MAN-ETI-003 · Declaració anual · v1.0</div>
+  </div>
+
+  <form method="POST">
+    <input type="hidden" name="_subject" value="⚖️ Nova Declaració de Conflictes d'Interessos">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament la teva Declaració de Conflictes d'Interessos. Gràcies per la teva transparència!">
+    <input type="text" name="_honey" style="display:none">
+    <input type="hidden" name="formulari" value="Declaració de Conflictes d'Interessos (MAN-ETI-003)">
+
+    <!-- 🔒 PANY D'ACCÉS -->
+    <fieldset class="gate" id="access-gate">
+      <legend>🔒 Accés Restringit</legend>
+      <label style="color:#555;font-weight:normal;margin-bottom:15px;">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat ACAMPA.</label>
+      <input type="text" id="access-code-input" placeholder="Codi d'accés" autocomplete="off" required>
+      <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
+      <p id="error-msg"></p>
+    </fieldset>
+
+    <!-- 📝 CONTINGUT DEL FORMULARI -->
+    <div id="form-content" style="display:none;">
+
+      <fieldset>
+        <legend>1 · Dades de la persona declarant</legend>
+        <label class="main-label">Nom i cognoms *</label>
+        <input type="text" name="nom_cognoms" required>
+        <div class="row">
+          <div><label class="main-label">DNI / NIF / NIE *</label><input type="text" name="dni" required></div>
+          <div><label class="main-label">Càrrec / Funció *</label><input type="text" name="carrec" required placeholder="Ex: Vocal, Voluntari/a..."></div>
+        </div>
+        <div class="row">
+          <div><label class="main-label">Correu electrònic *</label><input type="email" name="email" required></div>
+          <div><label class="main-label">Any de la declaració *</label><input type="text" name="any_declaracio" value="2026" required></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Interessos econòmics</legend>
+        <div class="info">Marca la opció que correspongui. Si marques "Sí", detalla-ho breument (SEC-011).</div>
+        <div class="q-block">
+          <div class="q-text">Tens interessos econòmics o participacions en empreses proveïdores d'ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="eco_proveidors" value="Sí" required onclick="toggleDetail('d_eco1',true)"> Sí</label>
+            <label><input type="radio" name="eco_proveidors" value="No" onclick="toggleDetail('d_eco1',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_eco1" name="eco_proveidors_detall" placeholder="Si és Sí, especifica...">
+        </div>
+        <div class="q-block">
+          <div class="q-text">Rebs compensacions econòmiques de tercers relacionats amb l'activitat d'ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="eco_compensacions" value="Sí" required onclick="toggleDetail('d_eco2',true)"> Sí</label>
+            <label><input type="radio" name="eco_compensacions" value="No" onclick="toggleDetail('d_eco2',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_eco2" name="eco_compensacions_detall" placeholder="Si és Sí, especifica...">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Relacions familiars</legend>
+        <div class="q-block">
+          <div class="q-text">Tens parentiu (fins a 2n grau) amb persones que contractin o col·laborin amb ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="fam_parentiu" value="Sí" required onclick="toggleDetail('d_fam1',true)"> Sí</label>
+            <label><input type="radio" name="fam_parentiu" value="No" onclick="toggleDetail('d_fam1',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_fam1" name="fam_parentiu_detall" placeholder="Si és Sí, indica parentiu i rol...">
+        </div>
+        <div class="q-block">
+          <div class="q-text">Participes en decisions que afectin directament familiars teus dins d'ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="fam_decisions" value="Sí" required onclick="toggleDetail('d_fam2',true)"> Sí</label>
+            <label><input type="radio" name="fam_decisions" value="No" onclick="toggleDetail('d_fam2',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_fam2" name="fam_decisions_detall" placeholder="Si és Sí, especifica...">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Relacions professionals</legend>
+        <div class="q-block">
+          <div class="q-text">Tens relacions professionals que puguin influir en les decisions d'ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="prof_relacions" value="Sí" required onclick="toggleDetail('d_prof1',true)"> Sí</label>
+            <label><input type="radio" name="prof_relacions" value="No" onclick="toggleDetail('d_prof1',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_prof1" name="prof_relacions_detall" placeholder="Si és Sí, especifica...">
+        </div>
+        <div class="q-block">
+          <div class="q-text">Participes en altres entitats del sector que puguin ser competidores o col·laboradores d'ACAMPA?</div>
+          <div class="radio-group">
+            <label><input type="radio" name="prof_altres_entitats" value="Sí" required onclick="toggleDetail('d_prof2',true)"> Sí</label>
+            <label><input type="radio" name="prof_altres_entitats" value="No" onclick="toggleDetail('d_prof2',false)"> No</label>
+          </div>
+          <input type="text" class="detail-input" id="d_prof2" name="prof_altres_entitats_detall" placeholder="Si és Sí, indica l'entitat...">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Altres circumstàncies</legend>
+        <label class="main-label">Hi ha alguna altra circumstància que pugui generar (o semblar que genera) un conflicte d'interessos?</label>
+        <textarea name="altres_circumstancies" placeholder="Escriu aquí qualsevol altra situació rellevant. Si no n'hi ha cap, escriu 'Cap'."></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>6 · Compromisos i signatura</legend>
+        <div class="warn">⚠️ La no declaració d'un conflicte d'interessos conegut es considera una <strong>infracció greu</strong> segons el Codi Ètic (SEC-018).</div>
+        <label class="check"><input type="checkbox" name="compromis_declarar" value="SÍ" required><span>Em comprometo a declarar immediatament qualsevol nou conflicte que sorgeixi durant l'any. *</span></label>
+        <label class="check"><input type="checkbox" name="compromis_abstencio" value="SÍ" required><span>Em comprometo a abstenir-me de participar en deliberacions i votacions on hi hagi conflicte d'interessos. *</span></label>
+        <label class="check"><input type="checkbox" name="declaracio_verac" value="SÍ" required><span>Declaro sota la meva responsabilitat que la informació proporcionada és veraç i completa. *</span></label>
+        <label class="main-label" style="margin-top:16px;">Escriu el teu nom i cognoms com a signatura *</label>
+        <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
+        <label class="main-label">Data de signatura</label>
+        <input type="date" name="data_signatura" id="data_signatura" required>
+      </fieldset>
+
+      <button type="submit">📨 Enviar Declaració a ACAMPA</button>
+    </div>
+  </form>
+
+  <div class="footer">MAN-ETI-003 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  (function(){ const f=document.querySelector('form'); if(f&&typeof DEFAULT_EMAIL!=='undefined') f.action='https://formsubmit.co/'+DEFAULT_EMAIL; })();
+  const d=new Date(); const ds=document.getElementById('data_signatura');
+  if(ds) ds.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+
+  function toggleDetail(id,show){ const el=document.getElementById(id); el.style.display=show?'block':'none'; if(!show)el.value=''; if(show)el.focus(); }
+
+  const unlockBtn=document.getElementById('unlock-btn'), codeInput=document.getElementById('access-code-input'), errorMsg=document.getElementById('error-msg'), gate=document.getElementById('access-gate'), content=document.getElementById('form-content');
+  function tryUnlock(){ const c=codeInput.value.trim().toUpperCase(); if(typeof ACCESS_CODES!=='undefined'&&ACCESS_CODES.map(x=>x.toUpperCase()).includes(c)){ gate.style.display='none'; content.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); } else { errorMsg.textContent=(typeof ERROR_MSG!=='undefined')?ERROR_MSG:"Codi incorrecte."; errorMsg.style.display='block'; codeInput.value=''; codeInput.focus(); } }
+  if(unlockBtn) unlockBtn.addEventListener('click',tryUnlock);
+  if(codeInput) codeInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+</script>
+</body>
+</html>

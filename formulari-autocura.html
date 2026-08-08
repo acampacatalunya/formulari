@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compromís d'Autocura del Voluntariat · ACAMPA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50;line-height:1.6}
+.page{max-width:780px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden}
+.header{background:linear-gradient(135deg,#27ae60,#16a085);color:#fff;padding:32px 24px;text-align:center}
+.header img{height:58px;margin-bottom:10px}
+.header h1{font-size:1.3rem}
+.header .code{display:inline-block;margin-top:8px;background:rgba(255,255,255,.18);padding:3px 16px;border-radius:16px;font-size:.8rem}
+form{padding:28px 40px}
+fieldset{border:1px solid #d5dbdb;border-radius:8px;padding:18px 20px;margin-bottom:22px}
+legend{font-weight:700;color:#16a085;padding:0 8px}
+label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4px;color:#1a5276}
+input[type=text],input[type=email],input[type=tel],input[type=date],select{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe}
+.row{display:flex;gap:16px}.row>div{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
+.check input{margin-top:3px;flex-shrink:0}
+.info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.green{background:#eafaf1;border-left:4px solid #27ae60;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+button{width:100%;background:#16a085;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
+button:hover{background:#1abc9c}
+.footer{background:#1a5276;color:#fff;text-align:center;padding:12px;font-size:.76rem}
+.gate{border:2px solid #e74c3c;background:#fdedec;text-align:center}
+.gate legend{color:#e74c3c;font-size:1.1rem}
+.gate input{text-align:center;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase}
+.btn-unlock{background:#e74c3c!important;margin-top:12px}
+.btn-unlock:hover{background:#c0392b!important}
+#error-msg{color:#e74c3c;font-size:.85rem;margin-top:10px;display:none;font-weight:600}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img src="https://i.postimg.cc/0K95v8Lm/logo.png" alt="ACAMPA">
+    <h1>Compromís d'Autocura del Voluntariat</h1>
+    <div class="code">MAN-ETI-005 · Annex al Codi Ètic · v1.0</div>
+  </div>
+
+  <form method="POST">
+    <input type="hidden" name="_subject" value="💚 Nou Compromís d'Autocura del Voluntariat">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el teu Compromís d'Autocura. Gràcies per cuidar-te mentre cuides els altres!">
+    <input type="text" name="_honey" style="display:none">
+    <input type="hidden" name="formulari" value="Compromís d'Autocura del Voluntariat (MAN-ETI-005)">
+
+    <!-- 🔒 PANY D'ACCÉS -->
+    <fieldset class="gate" id="access-gate">
+      <legend>🔒 Accés Restringit</legend>
+      <label style="color:#555;font-weight:normal;margin-bottom:15px;">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat ACAMPA.</label>
+      <input type="text" id="access-code-input" placeholder="Codi d'accés" autocomplete="off" required>
+      <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
+      <p id="error-msg"></p>
+    </fieldset>
+
+    <!-- 📝 CONTINGUT DEL FORMULARI -->
+    <div id="form-content" style="display:none;">
+
+      <fieldset>
+        <legend>1 · Dades de la persona voluntària</legend>
+        <label class="main-label">Nom i cognoms *</label>
+        <input type="text" name="nom_cognoms" required>
+        <div class="row">
+          <div><label class="main-label">DNI / NIF / NIE *</label><input type="text" name="dni" required></div>
+          <div><label class="main-label">Telèfon</label><input type="tel" name="telefon"></div>
+        </div>
+        <label class="main-label">Correu electrònic *</label>
+        <input type="email" name="email" required>
+        <div class="row">
+          <div><label class="main-label">Data d'incorporació com a voluntari/a</label><input type="date" name="data_incorporacio"></div>
+          <div><label class="main-label">Tasques / Àmbit de voluntariat</label><input type="text" name="tasques" placeholder="Ex: acompanyament, acollida..."></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Per què l'autocura?</legend>
+        <div class="green">💚 <strong>Lema:</strong> "Per cuidar els altres, primer ens hem de cuidar a nosaltres mateixos."</div>
+        <div class="info">El voluntariat d'ACAMPA acompanya persones amb MPA i les seves famílies en moments de gran càrrega emocional. Aquesta tasca pot generar estrès, fatiga emocional i risc d'esgotament. Aquest document formalitza el compromís mutu de vetllar pel teu benestar (SEC-006).</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Els meus compromisos com a voluntari/a</legend>
+        <label class="check"><input type="checkbox" name="comp_salut_fisica" value="SÍ" required><span>Cuidar la meva salut física: descansar, mantenir hàbits saludables i no assumir tasques que superin la meva capacitat. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_salut_emocional" value="SÍ" required><span>Cuidar la meva salut emocional: reconèixer senyals d'esgotament, tristesa, ansietat o frustració. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_demana_ajuda" value="SÍ" required><span>Demanar ajuda quan la necessiti i comunicar qualsevol dificultat al/la Coordinador/a de Voluntariat. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_supervisions" value="SÍ" required><span>Participar en les supervisions emocionals i sessions de suport organitzades per ACAMPA. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_limits" value="SÍ" required><span>Respectar els meus límits i dir "no" quan sigui necessari, sense sentir-me culpable. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_desconnectar" value="SÍ" required><span>Desconnectar i respectar els meus espais de descans i vida personal. *</span></label>
+        <label class="check"><input type="checkbox" name="comp_pausa" value="SÍ" required><span>Comunicar amb antelació si necessito una pausa temporal o definitiva en el voluntariat. *</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Senyals d'alerta</legend>
+        <div class="warn">🚨 Si identifiques qualsevol d'aquests senyals, parla amb el/la Coordinador/a de Voluntariat. Demanar ajuda és un acte de responsabilitat, no de debilitat:
+          <ul style="padding-left:18px;margin-top:6px;">
+            <li>Esgotament físic o emocional persistent.</li>
+            <li>Dificultat per dormir o malsons recurrents.</li>
+            <li>Desconnexió emocional o apatia cap a les persones ateses.</li>
+            <li>Irritabilitat, tristesa o ansietat inusual.</li>
+            <li>Aïllament social o sentiment de culpa.</li>
+          </ul>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Signatura</legend>
+        <div class="info">Entenc que cuidar-me és part essencial de la meva tasca com a voluntari/a d'ACAMPA.</div>
+        <label class="main-label">Escriu el teu nom i cognoms com a signatura *</label>
+        <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
+        <label class="main-label">Data de signatura</label>
+        <input type="date" name="data_signatura" id="data_signatura" required>
+      </fieldset>
+
+      <button type="submit">📨 Enviar Compromís a ACAMPA</button>
+    </div>
+  </form>
+
+  <div class="footer">MAN-ETI-005 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  (function(){ const f=document.querySelector('form'); if(f&&typeof DEFAULT_EMAIL!=='undefined') f.action='https://formsubmit.co/'+DEFAULT_EMAIL; })();
+  const d=new Date(); const ds=document.getElementById('data_signatura');
+  if(ds) ds.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+
+  const unlockBtn=document.getElementById('unlock-btn'), codeInput=document.getElementById('access-code-input'), errorMsg=document.getElementById('error-msg'), gate=document.getElementById('access-gate'), content=document.getElementById('form-content');
+  function tryUnlock(){ const c=codeInput.value.trim().toUpperCase(); if(typeof ACCESS_CODES!=='undefined'&&ACCESS_CODES.map(x=>x.toUpperCase()).includes(c)){ gate.style.display='none'; content.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); } else { errorMsg.textContent=(typeof ERROR_MSG!=='undefined')?ERROR_MSG:"Codi incorrecte."; errorMsg.style.display='block'; codeInput.value=''; codeInput.focus(); } }
+  if(unlockBtn) unlockBtn.addEventListener('click',tryUnlock);
+  if(codeInput) codeInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+</script>
+</body>
+</html>
