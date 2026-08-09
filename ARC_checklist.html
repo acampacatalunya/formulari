@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Assegurança RC · Formulari ACAMPA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50;line-height:1.6}
+.page{max-width:850px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden}
+.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:32px 24px;text-align:center}
+.header img{height:58px;margin-bottom:10px}
+.header h1{font-size:1.35rem;margin-bottom:4px}
+.header .subtitle{font-size:.9rem;opacity:.9;margin-bottom:8px}
+.header .code{display:inline-block;background:rgba(255,255,255,.18);padding:3px 16px;border-radius:16px;font-size:.8rem}
+form{padding:28px 40px}
+fieldset{border:1px solid #d5dbdb;border-radius:8px;padding:18px 20px;margin-bottom:22px}
+legend{font-weight:700;color:#1a5276;padding:0 8px;font-size:1.05rem}
+label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4px;color:#1a5276}
+input[type=text],input[type=email],input[type=date],select,textarea{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe;font-family:inherit}
+textarea{min-height:80px;resize:vertical}
+.row{display:flex;gap:16px}
+.row>div{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
+.check input{margin-top:3px;flex-shrink:0;cursor:pointer}
+.check label{cursor:pointer}
+.info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.section-title{font-size:1rem;font-weight:700;color:#1a5276;margin:16px 0 10px;padding-left:10px;border-left:4px solid #2980b9}
+.progress-bar{width:100%;height:24px;background:#ecf0f1;border-radius:12px;overflow:hidden;margin:16px 0;position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,#27ae60,#2ecc71);transition:width .3s ease;width:0%}
+.progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:700;font-size:.85rem;color:#2c3e50}
+button{width:100%;background:#1a5276;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
+button:hover{background:#2980b9}
+.footer{background:#1a5276;color:#fff;text-align:center;padding:12px;font-size:.76rem}
+.gate{border:2px solid #e74c3c;background:#fdedec;text-align:center}
+.gate legend{color:#e74c3c;font-size:1.1rem}
+.gate input{text-align:center;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase}
+.btn-unlock{background:#e74c3c!important;margin-top:12px}
+.btn-unlock:hover{background:#c0392b!important}
+#error-msg{color:#e74c3c;font-size:.85rem;margin-top:10px;display:none;font-weight:600}
+.subsection{margin:14px 0;padding:12px;background:#fafafa;border-radius:6px}
+.subsection-title{font-size:.9rem;font-weight:600;color:#34495e;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img src="https://i.postimg.cc/0K95v8Lm/logo.png" alt="ACAMPA">
+    <h1>Checklist Assegurança Responsabilitat Civil</h1>
+    <div class="subtitle">Gestió operatiu de l'assegurança de RC</div>
+    <div class="code">MAN-SEG-001 · v1.0 · Juliol 2026</div>
+  </div>
+
+  <form action="https://formsubmit.co/info@acampa.cat" method="POST" data-form-type="asseguranca-rc">
+    <input type="hidden" name="_subject" value="📋 Checklist Assegurança RC completat">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el Checklist d'Assegurança RC. Gràcies per la teva gestió!">
+    <input type="text" name="_honey" style="display:none">
+
+    <!-- 🔒 PANY D'ACCÉS -->
+    <fieldset class="gate" id="access-gate">
+      <legend>🔒 Accés Restringit</legend>
+      <label style="color:#555;font-weight:normal;margin-bottom:15px">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat Secretaria.</label>
+      <input type="text" id="access-code-input" placeholder="Ex: ACAMPA2026" autocomplete="off" required>
+      <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
+      <p id="error-msg"></p>
+    </fieldset>
+
+    <!-- 📝 FORMULARI -->
+    <div id="form-content" style="display:none">
+
+      <!-- Barra de progrés -->
+      <div class="info">
+        <strong>📊 Progrés del Checklist</strong>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+          <div class="progress-text" id="progress-text">0% Completat</div>
+        </div>
+      </div>
+
+      <!-- Dades de la persona -->
+      <fieldset>
+        <legend>👤 Dades de la persona</legend>
+        <label class="main-label">Nom i cognoms *</label>
+        <input type="text" name="nom_cognoms" required>
+        <div class="row">
+          <div>
+            <label class="main-label">Càrrec *</label>
+            <select name="carrec" required>
+              <option value="">— Selecciona —</option>
+              <option>President/a</option>
+              <option>Tresorer/a</option>
+              <option>Secretari/ària</option>
+              <option>Vocal</option>
+              <option>Altres</option>
+            </select>
+          </div>
+          <div>
+            <label class="main-label">Data de revisió *</label>
+            <input type="date" name="data_revisio" id="data_revisio" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Secció 1: Conceptes Bàsics -->
+      <fieldset>
+        <legend>📖 1. Conceptes Bàsics</legend>
+        <div class="check">
+          <input type="checkbox" name="concepte_1" value="Entendre que és una pòlissa que cobreix danys i perjudicis causats a tercers">
+          <label>Entendre que és una pòlissa que cobreix danys i perjudicis causats a tercers</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="concepte_2" value="Comprendre que protegeix l'entitat, els voluntaris i els beneficiaris">
+          <label>Comprendre que protegeix l'entitat, els voluntaris i els beneficiaris</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="concepte_3" value="Saber que és obligatòria segons la Llei 4/2008 del voluntariat">
+          <label>Saber que és obligatòria segons la Llei 4/2008 del voluntariat</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="concepte_4" value="Conèixer els objectius principals: protecció, compliment legal, tranquil·litat">
+          <label>Conèixer els objectius principals: protecció, compliment legal, tranquil·litat</label>
+        </div>
+      </fieldset>
+
+      <!-- Secció 2: Raons per Contractar-la -->
+      <fieldset>
+        <legend>⚖️ 2. Raons per Contractar-la</legend>
+        
+        <div class="subsection">
+          <div class="subsection-title">Raons legals</div>
+          <div class="check">
+            <input type="checkbox" name="rao_legal_1" value="Conèixer la Llei 4/2008 del voluntariat (obligatorietat)">
+            <label>Conèixer la Llei 4/2008 del voluntariat (obligatorietat)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_legal_2" value="Conèixer el Decret 137/2009 (requisits mínims)">
+            <label>Conèixer el Decret 137/2009 (requisits mínims)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_legal_3" value="Incloure la previsió als Estatuts d'ACAMPA">
+            <label>Incloure la previsió als Estatuts d'ACAMPA</label>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">Raons de protecció</div>
+          <div class="check">
+            <input type="checkbox" name="rao_proteccio_1" value="Activitats amb persones vulnerables (risc de caigudes/incidents)">
+            <label>Activitats amb persones vulnerables (risc de caigudes/incidents)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_proteccio_2" value="Voluntariat actiu (tasques d'acompanyament i suport)">
+            <label>Voluntariat actiu (tasques d'acompanyament i suport)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_proteccio_3" value="Events i activitats (jornades, xerrades, curses)">
+            <label>Events i activitats (jornades, xerrades, curses)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_proteccio_4" value="Ús d'espais públics o privats">
+            <label>Ús d'espais públics o privats</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="rao_proteccio_5" value="Transport de persones">
+            <label>Transport de persones</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Secció 3: Cobertures i Exclusions -->
+      <fieldset>
+        <legend>📋 3. Cobertures i Exclusions</legend>
+        
+        <div class="subsection">
+          <div class="subsection-title">✅ Què COBREIX (habitualment)</div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_1" value="RC General: Danys causats a tercers durant activitats">
+            <label>RC General: Danys causats a tercers durant activitats</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_2" value="RC General: Danys materials a propietats de tercers">
+            <label>RC General: Danys materials a propietats de tercers</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_3" value="RC General: Danys corporals a persones alienes">
+            <label>RC General: Danys corporals a persones alienes</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_4" value="RC Voluntaris: Danys causats per voluntaris en funcions">
+            <label>RC Voluntaris: Danys causats per voluntaris en funcions</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_5" value="RC Voluntaris: Protecció i defensa jurídica">
+            <label>RC Voluntaris: Protecció i defensa jurídica</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_6" value="RC Activitats: Events, jornades, xerrades">
+            <label>RC Activitats: Events, jornades, xerrades</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_7" value="RC Activitats: Activitats esportives adaptades">
+            <label>RC Activitats: Activitats esportives adaptades</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_8" value="RC Activitats: Visites culturals i sortides">
+            <label>RC Activitats: Visites culturals i sortides</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_9" value="RC Específica: Transport en vehicles de l'entitat">
+            <label>RC Específica: Transport en vehicles de l'entitat</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="cobertura_10" value="RC Específica: Vehicles particulars per voluntariat">
+            <label>RC Específica: Vehicles particulars per voluntariat</label>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">❌ Què NO COBREIX (habitualment)</div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_1" value="Actes intencionats o dolosos">
+            <label>Actes intencionats o dolosos</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_2" value="Actes contraris a la llei o delictes">
+            <label>Actes contraris a la llei o delictes</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_3" value="Danys als béns propis de l'entitat">
+            <label>Danys als béns propis de l'entitat</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_4" value="Danys als vehicles (necessita assegurança específica)">
+            <label>Danys als vehicles (necessita assegurança específica)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_5" value="Danys als voluntaris (necessita assegurança d'accidents)">
+            <label>Danys als voluntaris (necessita assegurança d'accidents)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_6" value="Activitats no declarades a la pòlissa">
+            <label>Activitats no declarades a la pòlissa</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_7" value="Sancions administratives o multes">
+            <label>Sancions administratives o multes</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="exclusio_8" value="Danys per contaminació o medi ambient">
+            <label>Danys per contaminació o medi ambient</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Secció 4: Procés de Contractació -->
+      <fieldset>
+        <legend>📋 4. Procés de Contractació</legend>
+        
+        <div class="subsection">
+          <div class="subsection-title">🎯 Recomanació per a ACAMPA</div>
+          <div class="check">
+            <input type="checkbox" name="recomanacio_1" value="Contractar COBERTURA ESTÀNDARD (600.000 €)">
+            <label>Contractar COBERTURA ESTÀNDARD (600.000 €)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="recomanacio_2" value="Verificar que inclou defensa jurídica completa">
+            <label>Verificar que inclou defensa jurídica completa</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="recomanacio_3" value="Verificar que cobreix transport de voluntaris">
+            <label>Verificar que cobreix transport de voluntaris</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="recomanacio_4" value="Franquícia reduïda (0-150 €)">
+            <label>Franquícia reduïda (0-150 €)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="recomanacio_5" value="Cost assequible (300-400 €/any)">
+            <label>Cost assequible (300-400 €/any)</label>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">📋 7 Passos per Contractar</div>
+          <div class="check">
+            <input type="checkbox" name="pas_1" value="PAS 1: Identificació de necessitats (activitats, voluntaris, riscos)">
+            <label>PAS 1: Identificació de necessitats (activitats, voluntaris, riscos)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_2" value="PAS 2: Sol·licitud de pressupostos (mínim 3 companyies)">
+            <label>PAS 2: Sol·licitud de pressupostos (mínim 3 companyies)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_3" value="PAS 3: Comparativa i selecció (elaborada pel Tresorer/a)">
+            <label>PAS 3: Comparativa i selecció (elaborada pel Tresorer/a)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_4" value="PAS 4: Aprovació per Junta Directiva">
+            <label>PAS 4: Aprovació per Junta Directiva</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_5" value="PAS 5: Formalització del contracte (signatura i pagament)">
+            <label>PAS 5: Formalització del contracte (signatura i pagament)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_6" value="PAS 6: Comunicació interna a voluntaris i membres">
+            <label>PAS 6: Comunicació interna a voluntaris i membres</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="pas_7" value="PAS 7: Arxiu i registre (calendari de renovació)">
+            <label>PAS 7: Arxiu i registre (calendari de renovació)</label>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">📄 Documentació necessària</div>
+          <div class="check">
+            <input type="checkbox" name="doc_1" value="Estatuts d'ACAMPA inscrits al Registre">
+            <label>Estatuts d'ACAMPA inscrits al Registre</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="doc_2" value="CIF de l'entitat">
+            <label>CIF de l'entitat</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="doc_3" value="NIF del representant legal (President/a o Tresorer/a)">
+            <label>NIF del representant legal (President/a o Tresorer/a)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="doc_4" value="Acta de la Junta Directiva (aprovació)">
+            <label>Acta de la Junta Directiva (aprovació)</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="doc_5" value="Llistat d'activitats previstes">
+            <label>Llistat d'activitats previstes</label>
+          </div>
+          <div class="check">
+            <input type="checkbox" name="doc_6" value="Llistat de voluntaris (nombre aproximat)">
+            <label>Llistat de voluntaris (nombre aproximat)</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Secció 5: Obligacions Legals -->
+      <fieldset>
+        <legend>⚖️ 5. Obligacions Legals</legend>
+        <div class="check">
+          <input type="checkbox" name="obligacio_1" value="Contractar i mantenir vigent l'assegurança de RC">
+          <label>Contractar i mantenir vigent l'assegurança de RC</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_2" value="Informar els voluntaris sobre les cobertures (en incorporació)">
+          <label>Informar els voluntaris sobre les cobertures (en incorporació)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_3" value="Comunicar a l'asseguradora canvis significatius">
+          <label>Comunicar a l'asseguradora canvis significatius</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_4" value="Notificar sinistres en termini (habitualment 7 dies)">
+          <label>Notificar sinistres en termini (habitualment 7 dies)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_5" value="Cooperar amb l'asseguradora en gestió de sinistres">
+          <label>Cooperar amb l'asseguradora en gestió de sinistres</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_6" value="Renovar anualment abans del venciment">
+          <label>Renovar anualment abans del venciment</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="obligacio_7" value="Arxivar documentació (temps legalment establert)">
+          <label>Arxivar documentació (temps legalment establert)</label>
+        </div>
+      </fieldset>
+
+      <!-- Secció 6: Gestió de Sinistres -->
+      <fieldset>
+        <legend>🚨 6. Gestió de Sinistres</legend>
+        <div class="info">
+          <strong>🚨 Què fer en cas de sinistre? (8 passos)</strong>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_1" value="PAS 1: Actuació immediata (assistència, 112 si cal, assegurar zona)">
+          <label>PAS 1: Actuació immediata (assistència, 112 si cal, assegurar zona)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_2" value="PAS 2: Notificació interna (Tresorer/a i President/a)">
+          <label>PAS 2: Notificació interna (Tresorer/a i President/a)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_3" value="PAS 3: Recollida de proves (fotos, vídeos, testimonis)">
+          <label>PAS 3: Recollida de proves (fotos, vídeos, testimonis)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_4" value="PAS 4: Notificació a l'asseguradora (màxim 7 dies)">
+          <label>PAS 4: Notificació a l'asseguradora (màxim 7 dies)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_5" value="PAS 5: Enviament de documentació completa">
+          <label>PAS 5: Enviament de documentació completa</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_6" value="PAS 6: Cooperació amb l'asseguradora">
+          <label>PAS 6: Cooperació amb l'asseguradora</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_7" value="PAS 7: Seguiment fins a resolució">
+          <label>PAS 7: Seguiment fins a resolució</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="sinistre_8" value="PAS 8: Anàlisi i prevenció (evitar incidents similars)">
+          <label>PAS 8: Anàlisi i prevenció (evitar incidents similars)</label>
+        </div>
+
+        <div class="warn">
+          <strong>⚠️ MOLT IMPORTANT:</strong>
+          <ul style="margin-top:8px;padding-left:18px">
+            <li>NO admitir responsabilitats sense consultar l'asseguradora</li>
+            <li>NO fer pagaments sense autorització de l'asseguradora</li>
+            <li>NO signar documents de reconeixement de deute sense assessorament</li>
+            <li>CONSERVAR TOTA LA DOCUMENTACIÓ</li>
+          </ul>
+        </div>
+      </fieldset>
+
+      <!-- Secció 7: Documentació i Arxiu -->
+      <fieldset>
+        <legend>📁 7. Documentació i Arxiu</legend>
+        <div class="info">
+          <strong>📅 Calendari de gestió documental</strong>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_1" value="Revisió de la pòlissa (Anual - 30 dies abans venciment)">
+          <label>Revisió de la pòlissa (Anual - 30 dies abans venciment)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_2" value="Renovació de la pòlissa (Anual - 15 dies abans)">
+          <label>Renovació de la pòlissa (Anual - 15 dies abans)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_3" value="Pagament de la prima (Data venciment)">
+          <label>Pagament de la prima (Data venciment)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_4" value="Comunicació als voluntaris (Anual - 1 mes després renovació)">
+          <label>Comunicació als voluntaris (Anual - 1 mes després renovació)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_5" value="Arxiu de documentació (Contínua - immediat)">
+          <label>Arxiu de documentació (Contínua - immediat)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="doc_arxiu_6" value="Revisió de sinistres pendents (Trimestral)">
+          <label>Revisió de sinistres pendents (Trimestral)</label>
+        </div>
+      </fieldset>
+
+      <!-- Secció 8: Preguntes Freqüents -->
+      <fieldset>
+        <legend>❓ 8. Preguntes Freqüents Revisades</legend>
+        <div class="check">
+          <input type="checkbox" name="faq_1" value="L'assegurança cobreix els voluntaris individualment? (SÍ)">
+          <label>L'assegurança cobreix els voluntaris individualment? (SÍ)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_2" value="Què passa si un voluntari causa accident amb vehicle propi?">
+          <label>Què passa si un voluntari causa accident amb vehicle propi?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_3" value="L'assegurança cobreix danys als propis voluntaris? (NO - cal accidents)">
+          <label>L'assegurança cobreix danys als propis voluntaris? (NO - cal accidents)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_4" value="Cobreix activitats fora de l'horari habitual? (SÍ, si són d'ACAMPA)">
+          <label>Cobreix activitats fora de l'horari habitual? (SÍ, si són d'ACAMPA)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_5" value="Què passa si augmenta el nombre de voluntaris?">
+          <label>Què passa si augmenta el nombre de voluntaris?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_6" value="Cobreix activitats internacionals? (Depèn de la pòlissa)">
+          <label>Cobreix activitats internacionals? (Depèn de la pòlissa)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_7" value="Què passa amb events de risc elevat (cursa solidària)?">
+          <label>Què passa amb events de risc elevat (cursa solidària)?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_8" value="Cobreix danys causats per menors d'edat?">
+          <label>Cobreix danys causats per menors d'edat?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_9" value="Què passa si l'asseguradora denega un sinistre?">
+          <label>Què passa si l'asseguradora denega un sinistre?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_10" value="Cobreix danys per negligència? (SÍ, negligència lleu)">
+          <label>Cobreix danys per negligència? (SÍ, negligència lleu)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_11" value="Què passa si un voluntari abandona ACAMPA?">
+          <label>Què passa si un voluntari abandona ACAMPA?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_12" value="Cobreix danys durant transport de persones?">
+          <label>Cobreix danys durant transport de persones?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_13" value="Què passa si ACAMPA canvia d'asseguradora?">
+          <label>Què passa si ACAMPA canvia d'asseguradora?</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_14" value="Cobreix danys reputacionals? (NO)">
+          <label>Cobreix danys reputacionals? (NO)</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="faq_15" value="Consultar dubtes amb Tresorer/a o assessoria jurídica">
+          <label>Consultar dubtes amb Tresorer/a o assessoria jurídica</label>
+        </div>
+      </fieldset>
+
+      <!-- Secció 9: Models de Comunicació -->
+      <fieldset>
+        <legend>📝 9. Models de Comunicació Disponibles</legend>
+        <div class="check">
+          <input type="checkbox" name="model_1" value="Model 1: Comunicació als voluntaris sobre l'assegurança">
+          <label>Model 1: Comunicació als voluntaris sobre l'assegurança</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="model_2" value="Model 2: Acta de Junta Directiva per aprovació">
+          <label>Model 2: Acta de Junta Directiva per aprovació</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="model_3" value="Model 3: Notificació de sinistre a l'asseguradora">
+          <label>Model 3: Notificació de sinistre a l'asseguradora</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="model_4" value="Model 4: Comunicació a administracions subvencionadores">
+          <label>Model 4: Comunicació a administracions subvencionadores</label>
+        </div>
+        <div class="check">
+          <input type="checkbox" name="model_5" value="Model 5: Informe anual d'assegurances">
+          <label>Model 5: Informe anual d'assegurances</label>
+        </div>
+      </fieldset>
+
+      <!-- Observacions -->
+      <fieldset>
+        <legend>💬 Observacions</legend>
+        <label class="main-label">Comentaris o observacions addicionals</label>
+        <textarea name="observacions" placeholder="Escriu aquí qualsevol comentari, dubte o observació sobre el checklist..."></textarea>
+      </fieldset>
+
+      <!-- Signatura -->
+      <fieldset>
+        <legend>✍️ Signatura</legend>
+        <label class="main-label">Nom i cognoms com a signatura *</label>
+        <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
+        <label class="main-label">Data de signatura</label>
+        <input type="date" name="data_signatura" id="data_signatura" required>
+      </fieldset>
+
+      <button type="submit">📨 Enviar Checklist a ACAMPA</button>
+    </div>
+  </form>
+
+  <div class="footer">MAN-SEG-001 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
+</div>
+
+<script src="config.js?v=1.0"></script>
+
+<script>
+  // Data d'avui automàtica
+  const d = new Date();
+  const dataRevisio = document.getElementById('data_revisio');
+  const dataSignatura = document.getElementById('data_signatura');
+  if (dataRevisio) dataRevisio.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  if (dataSignatura) dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+
+  // Barra de progrés
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const progressFill = document.getElementById('progress-fill');
+  const progressText = document.getElementById('progress-text');
+  const totalCheckboxes = checkboxes.length;
+
+  function updateProgress() {
+    const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    const percent = Math.round((checked / totalCheckboxes) * 100);
+    progressFill.style.width = percent + '%';
+    progressText.textContent = percent + '% Completat';
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+
+  // Pany d'accés
+  const unlockBtn = document.getElementById('unlock-btn');
+  const codeInput = document.getElementById('access-code-input');
+  const errorMsg = document.getElementById('error-msg');
+  const gate = document.getElementById('access-gate');
+  const content = document.getElementById('form-content');
+
+  function tryUnlock() {
+    const inputCode = codeInput.value.trim().toUpperCase();
+    
+    if (typeof ACCESS_CODES !== 'undefined' && ACCESS_CODES.includes(inputCode)) {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      codeInput.value = '';
+      codeInput.focus();
+    }
+  }
+
+  if (unlockBtn) unlockBtn.addEventListener('click', tryUnlock);
+  if (codeInput) {
+    codeInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        tryUnlock();
+      }
+    });
+  }
+</script>
+</body>
+</html>
