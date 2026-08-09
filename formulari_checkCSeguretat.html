@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registres de Còpies de Seguretat · ACAMPA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50;line-height:1.6}
+.page{max-width:780px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden}
+.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:32px 24px;text-align:center}
+.header img{height:58px;margin-bottom:10px}
+.header h1{font-size:1.35rem;margin-bottom:4px}
+.header .subtitle{font-size:.9rem;opacity:.9;margin-bottom:8px}
+.header .code{display:inline-block;background:rgba(255,255,255,.18);padding:3px 16px;border-radius:16px;font-size:.8rem}
+form{padding:28px 40px}
+fieldset{border:1px solid #d5dbdb;border-radius:8px;padding:18px 20px;margin-bottom:22px}
+legend{font-weight:700;color:#1a5276;padding:0 8px;font-size:1.05rem}
+label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4px;color:#1a5276}
+input[type=text],input[type=email],input[type=date],input[type=datetime-local],select,textarea{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe;font-family:inherit}
+textarea{min-height:80px;resize:vertical}
+.row{display:flex;gap:16px}
+.row>div{flex:1}
+.info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.danger{background:#fdedec;border-left:4px solid #e74c3c;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+.success{background:#eafaf1;border-left:4px solid #27ae60;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
+button{width:100%;background:#1a5276;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
+button:hover{background:#2980b9}
+.footer{background:#1a5276;color:#fff;text-align:center;padding:12px;font-size:.76rem}
+.gate{border:2px solid #e74c3c;background:#fdedec;text-align:center}
+.gate legend{color:#e74c3c;font-size:1.1rem}
+.gate input{text-align:center;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase}
+.btn-unlock{background:#e74c3c!important;margin-top:12px}
+.btn-unlock:hover{background:#c0392b!important}
+#error-msg{color:#e74c3c;font-size:.85rem;margin-top:10px;display:none;font-weight:600}
+.registre-section{display:none}
+.registre-section.active{display:block}
+.tab-selector{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:150px;padding:12px 10px;border:2px solid #d5dbdb;background:#f8f9fa;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;color:#555;text-align:center;transition:all .2s}
+.tab-btn:hover{border-color:#2980b9;background:#eaf2f8}
+.tab-btn.active{border-color:#1a5276;background:#1a5276;color:#fff}
+.tab-btn .icon{font-size:1.3rem;display:block;margin-bottom:4px}
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.tag-copies{background:#eaf2f8;color:#1a5276}
+.tag-incid{background:#fef9e7;color:#7d6608}
+.tag-verif{background:#eafaf1;color:#1e8449}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img src="https://i.postimg.cc/0K95v8Lm/logo.png" alt="ACAMPA">
+    <h1>💾 Registres de Còpies de Seguretat</h1>
+    <div class="subtitle">Registre operatiu del Procediment PRO-CS-001</div>
+    <div class="code">LOG-REG-001 · Formulari de registre · v1.0</div>
+  </div>
+
+  <form action="https://formsubmit.co/info@acampa.cat" method="POST">
+    <input type="hidden" name="_subject" value="💾 Nou registre de còpies de seguretat">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut el registre de còpies de seguretat. Gràcies per mantenir la traçabilitat del sistema!">
+    <input type="text" name="_honey" style="display:none">
+
+    <!-- 🔒 PANY D'ACCÉS -->
+    <fieldset class="gate" id="access-gate">
+      <legend>🔒 Accés Restringit</legend>
+      <label style="color:#555;font-weight:normal;margin-bottom:15px">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat Secretaria.</label>
+      <input type="text" id="access-code-input" placeholder="Ex: XXXXXXXXXX" autocomplete="off" required>
+      <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
+      <p id="error-msg"></p>
+    </fieldset>
+
+    <!-- 📝 FORMULARI -->
+    <div id="form-content" style="display:none">
+
+      <!-- Selector de tipus de registre -->
+      <fieldset>
+        <legend>📋 1 · Quin registre vols registrar?</legend>
+        <div class="info">
+          Selecciona el tipus de registre que vols introduir. El formulari s'adaptarà automàticament als camps corresponents.
+        </div>
+        <div class="tab-selector">
+          <div class="tab-btn active" data-target="copies" onclick="selectTab(this)">
+            <span class="icon">💿</span>
+            LOG_COPIES<br>
+            <small>Registre de còpies</small>
+          </div>
+          <div class="tab-btn" data-target="incidencies" onclick="selectTab(this)">
+            <span class="icon">⚠️</span>
+            LOG_INCIDENCIES<br>
+            <small>Registre d'incidències</small>
+          </div>
+          <div class="tab-btn" data-target="verificacions" onclick="selectTab(this)">
+            <span class="icon">✅</span>
+            LOG_VERIFICACIONS<br>
+            <small>Proves de restauració</small>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Dades comunes -->
+      <fieldset>
+        <legend>👤 2 · Dades del registre</legend>
+        <div class="row">
+          <div>
+            <label class="main-label">Responsable del registre *</label>
+            <input type="text" name="responsable" required placeholder="Nom i cognoms">
+          </div>
+          <div>
+            <label class="main-label">Càrrec *</label>
+            <select name="carrec" required>
+              <option value="">— Selecciona —</option>
+              <option>Coordinador/a Sistemes</option>
+              <option>Delegat/da Protecció Dades</option>
+              <option>President/a</option>
+              <option>Secretari/ària</option>
+              <option>Tresorer/a</option>
+              <option>Vocal</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label class="main-label">Data i hora del registre *</label>
+            <input type="datetime-local" name="data_registre" id="data_registre" required>
+          </div>
+          <div>
+            <label class="main-label">Correu electrònic *</label>
+            <input type="email" name="email" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- SECCIÓ A: LOG_COPIES                              -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <div class="registre-section active" id="section-copies">
+        <fieldset>
+          <legend>💿 3A · Registre de còpies de seguretat (LOG_COPIES)</legend>
+          <div class="info">
+            <span class="tag tag-copies">LOG_COPIES</span> Registra cada còpia de seguretat realitzada segons el calendari establert al PRO-CS-001.
+          </div>
+
+          <label class="main-label">Tipus de còpia *</label>
+          <select name="cp_tipus" id="cp_tipus">
+            <option value="">— Selecciona —</option>
+            <option>Diària (dades crítiques Google Workspace)</option>
+            <option>Setmanal (disc extern local)</option>
+            <option>Mensual (exportació completa a núvol secundari)</option>
+            <option>Anual (arxiu històric complet)</option>
+            <option>Extraordinària (abans de modificació important)</option>
+          </select>
+
+          <label class="main-label">Abast de la còpia *</label>
+          <select name="cp_abast" id="cp_abast">
+            <option value="">— Selecciona —</option>
+            <option>Google Workspace complet (Drive, Forms, Sheets, Docs)</option>
+            <option>Google Forms (formularis i respostes)</option>
+            <option>Google Sheets (fulls de càlcul)</option>
+            <option>Arxius locals (ordinador seu)</option>
+            <option>Correu electrònic institucional</option>
+            <option>Complet (tots els sistemes)</option>
+          </select>
+
+          <div class="row">
+            <div>
+              <label class="main-label">Suport de destí *</label>
+              <select name="cp_suport" id="cp_suport">
+                <option value="">— Selecciona —</option>
+                <option>Google Drive (automàtic)</option>
+                <option>Disc extern USB xifrat</option>
+                <option>Núvol secundari (pCloud)</option>
+                <option>ACAMPA Forms (arxiu versionat)</option>
+              </select>
+            </div>
+            <div>
+              <label class="main-label">Resultat *</label>
+              <select name="cp_resultat" id="cp_resultat">
+                <option value="">— Selecciona —</option>
+                <option value="Correcta">✅ Correcta - Sense incidències</option>
+                <option value="Correcta amb advertències">⚠️ Correcta amb advertències</option>
+                <option value="Incorrecta">❌ Incorrecta - Amb errors</option>
+                <option value="Parcial">⏸️ Parcial - Algunes dades no copiades</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="main-label">Mida de la còpia (opcional)</label>
+          <input type="text" name="cp_mida" id="cp_mida" placeholder="Ex: 2.4 GB, 450 MB...">
+
+          <label class="main-label">Incidències o observacions</label>
+          <textarea name="cp_incidencies" id="cp_incidencies" placeholder="Descriu qualsevol incidència, advertència o observació rellevant. Si la còpia ha estat correcta i sense incidències, pots escriure 'Cap'."></textarea>
+        </fieldset>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- SECCIÓ B: LOG_INCIDENCIES                         -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <div class="registre-section" id="section-incidencies">
+        <fieldset>
+          <legend>⚠️ 3B · Registre d'incidències (LOG_INCIDENCIES)</legend>
+          <div class="info">
+            <span class="tag tag-incid">LOG_INCIDENCIES</span> Registra qualsevol incidència relacionada amb les còpies de seguretat o la integritat de les dades.
+          </div>
+
+          <label class="main-label">Tipus d'incidència *</label>
+          <select name="in_tipus" id="in_tipus">
+            <option value="">— Selecciona —</option>
+            <option>Pèrdua accidental de dades</option>
+            <option>Atac informàtic (ransomware/malware)</option>
+            <option>Caiguda servei Google</option>
+            <option>Corrupció de dades</option>
+            <option>Accés no autoritzat detectat</option>
+            <option>Bretxa de seguretat</option>
+            <option>Error en restauració</option>
+            <option>Fallada de suport físic (disc, USB)</option>
+            <option>Altres</option>
+          </select>
+
+          <label class="main-label">Nivell d'impacte *</label>
+          <select name="in_impacte" id="in_impacte">
+            <option value="">— Selecciona —</option>
+            <option value="Baix">🟢 Baix - Sense afectació significativa</option>
+            <option value="Mitjà">🟡 Mitjà - Afectació parcial recuperable</option>
+            <option value="Alt">🟠 Alt - Afectació greu, recuperable</option>
+            <option value="Crític">🔴 Crític - Afectació molt greu</option>
+          </select>
+
+          <label class="main-label">Descripció de la incidència *</label>
+          <textarea name="in_descripcio" id="in_descripcio" required placeholder="Descriu amb detall què ha passat, quan s'ha detectat i quines dades/sistemes estan afectats..."></textarea>
+
+          <label class="main-label">Accions preses *</label>
+          <textarea name="in_accions" id="in_accions" required placeholder="Descriu les accions immediates que s'han pres per contenir/resoldre la incidència..."></textarea>
+
+          <label class="main-label">Resolució</label>
+          <textarea name="in_resolucio" id="in_resolucio" placeholder="Si la incidència ja està resolta, descriu la solució final. Si està oberta, indica els propers passos..."></textarea>
+
+          <div class="row">
+            <div>
+              <label class="main-label">Estat *</label>
+              <select name="in_estat" id="in_estat">
+                <option value="">— Selecciona —</option>
+                <option>Oberta</option>
+                <option>En curs</option>
+                <option>Resolta</option>
+                <option>Tancada amb observacions</option>
+              </select>
+            </div>
+            <div>
+              <label class="main-label">Data de resolució (si aplica)</label>
+              <input type="date" name="in_data_resolucio" id="in_data_resolucio">
+            </div>
+          </div>
+
+          <div class="warn">
+            <strong>⚠️ Recordatori:</strong> Si la incidència és una bretxa de seguretat que afecta dades personals, cal notificar al DPD en menys de 72 hores i avaluar la comunicació a l'APDCAT i als afectats.
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- SECCIÓ C: LOG_VERIFICACIONS                       -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <div class="registre-section" id="section-verificacions">
+        <fieldset>
+          <legend>✅ 3C · Registre de verificacions (LOG_VERIFICACIONS)</legend>
+          <div class="info">
+            <span class="tag tag-verif">LOG_VERIFICACIONS</span> Registra les proves trimestrals de restauració i verificació d'integritat de les còpies de seguretat.
+          </div>
+
+          <label class="main-label">Tipus de verificació *</label>
+          <select name="vf_tipus" id="vf_tipus">
+            <option value="">— Selecciona —</option>
+            <option>Prova de restauració (trimestral)</option>
+            <option>Verificació d'integritat (checksum)</option>
+            <option>Comprovació de còpia completa</option>
+            <option>Verificació de suport físic</option>
+            <option>Auditoria interna de còpies</option>
+          </select>
+
+          <label class="main-label">Arxiu/s verificat/s *</label>
+          <input type="text" name="vf_arxiu" id="vf_arxiu" placeholder="Ex: ACAMPA_Forms_Master_2026-08.xlsx, carpeta Drive 'Documents Legals'...">
+
+          <label class="main-label">Origen de la còpia verificada *</label>
+          <select name="vf_origen" id="vf_origen">
+            <option value="">— Selecciona —</option>
+            <option>Google Drive</option>
+            <option>Disc extern USB</option>
+            <option>Núvol secundari (pCloud)</option>
+            <option>Arxiu versionat ACAMPA Forms (ESTR_Rx)</option>
+          </select>
+
+          <div class="row">
+            <div>
+              <label class="main-label">Resultat de la verificació *</label>
+              <select name="vf_resultat" id="vf_resultat">
+                <option value="">— Selecciona —</option>
+                <option value="Correcta">✅ Correcta - Arxiu íntegre i funcional</option>
+                <option value="Correcta amb advertències">⚠️ Correcta amb advertències</option>
+                <option value="Incorrecta">❌ Incorrecta - Arxiu corrupte o incomplet</option>
+                <option value="No verificable">❓ No verificable</option>
+              </select>
+            </div>
+            <div>
+              <label class="main-label">Temps de restauració (minuts)</label>
+              <input type="text" name="vf_temps" id="vf_temps" placeholder="Ex: 12 min">
+            </div>
+          </div>
+
+          <label class="main-label">Observacions</label>
+          <textarea name="vf_observacions" id="vf_observacions" placeholder="Qualsevol observació rellevant sobre la verificació. Si tot ha estat correcte, pots escriure 'Verificació superada sense incidències'."></textarea>
+
+          <div class="success">
+            <strong>✅ Objectiu RTO:</strong> El temps objectiu de restauració és &lt; 24 hores per a dades crítiques. Si el temps de restauració supera aquest llindar, cal documentar-ho i revisar el procediment.
+          </div>
+        </fieldset>
+      </fieldset>
+      </div>
+
+      <!-- Signatura -->
+      <fieldset>
+        <legend>✍️ 4 · Signatura</legend>
+        <label class="main-label">Nom complet com a signatura *</label>
+        <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
+        <label class="main-label">Data de signatura</label>
+        <input type="date" name="data_signatura" id="data_signatura" required>
+      </fieldset>
+
+      <button type="submit">📨 Enviar registre a ACAMPA</button>
+    </div>
+  </form>
+
+  <div class="footer">LOG-REG-001 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
+</div>
+
+<script src="config.js?v=1.0"></script>
+
+<script>
+  // ============================================================
+  // 1. DATA/HORA ACTUAL AUTOMÀTICA
+  // ============================================================
+  const now = new Date();
+  const localISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
+  
+  const dataRegistre = document.getElementById('data_registre');
+  if (dataRegistre) dataRegistre.value = localISO.slice(0, 16);
+  
+  const dataSignatura = document.getElementById('data_signatura');
+  if (dataSignatura) dataSignatura.value = localISO.split('T')[0];
+
+  // ============================================================
+  // 2. SELECTOR DE TABS (mostra/amaga seccions)
+  // ============================================================
+  function selectTab(element) {
+    // Desactivar tots els tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+
+    // Amagar totes les seccions
+    document.querySelectorAll('.registre-section').forEach(sec => sec.classList.remove('active'));
+
+    // Mostrar la secció seleccionada
+    const target = element.getAttribute('data-target');
+    const section = document.getElementById('section-' + target);
+    if (section) section.classList.add('active');
+
+    // Gestionar atributs required dels camps
+    toggleRequired('copies', target === 'copies');
+    toggleRequired('incidencies', target === 'incidencies');
+    toggleRequired('verificacions', target === 'verificacions');
+  }
+
+  function toggleRequired(prefix, required) {
+    const section = document.getElementById('section-' + prefix);
+    if (!section) return;
+    section.querySelectorAll('input, select, textarea').forEach(field => {
+      if (field.hasAttribute('data-required-orig')) {
+        if (required) {
+          field.setAttribute('required', '');
+        } else {
+          field.removeAttribute('required');
+        }
+      }
+    });
+  }
+
+  // Marcar els camps originals com a "required per defecte"
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.registre-section input, .registre-section select, .registre-section textarea').forEach(field => {
+      if (field.hasAttribute('required')) {
+        field.setAttribute('data-required-orig', 'true');
+      }
+    });
+  });
+
+  // ============================================================
+  // 3. PANY D'ACCÉS
+  // ============================================================
+  const unlockBtn = document.getElementById('unlock-btn');
+  const codeInput = document.getElementById('access-code-input');
+  const errorMsg = document.getElementById('error-msg');
+  const gate = document.getElementById('access-gate');
+  const content = document.getElementById('form-content');
+
+  function tryUnlock() {
+    const inputCode = codeInput.value.trim().toUpperCase();
+    
+    if (typeof ACCESS_CODES !== 'undefined' && ACCESS_CODES.includes(inputCode)) {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      codeInput.value = '';
+      codeInput.focus();
+    }
+  }
+
+  if (unlockBtn) unlockBtn.addEventListener('click', tryUnlock);
+  if (codeInput) {
+    codeInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        tryUnlock();
+      }
+    });
+  }
+</script>
+</body>
+</html>
