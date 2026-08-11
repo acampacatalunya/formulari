@@ -12,7 +12,7 @@ const ACCESS_CODES = [
 ];
 
 // 📧 CORREU ÚNIC DESTINATARI (mentre no tingueu emails separats)
-const DEFAULT_EMAIL = "info@acampa.cat";
+const DEFAULT_EMAIL = '849eac42396b113846283faae41e979e';
 
 // ❌ MISSATGE D'ERROR DEL CODI D'ACCÉS
 const ERROR_MSG = "El codi d'accés no és correcte. Si us plau, revisa el correu que t'ha enviat ACAMPA o contacta amb info@acampa.cat.";
