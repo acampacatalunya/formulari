@@ -53,26 +53,20 @@ button:hover{background:#2980b9}
   </div>
 
   <form action="https://formsubmit.co/849eac42396b113846283faae41e979e" method="POST">
-    <input type="hidden" name="_subject" value="📋 Checklist Assegurança RC completat">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el Checklist d'Assegurança RC. Gràcies per la teva gestió!">
-    <input type="text" name="_honey" style="display:none">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
-    <input type="hidden" name="form_id" value="checkarc">
+    <!-- Camp parany per a spambots (només cal una vegada) -->
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    
+    <input type="hidden" name="form_id" value="comite">
     <input type="hidden" name="_subject" value="👨‍⚕️ Nova consulta al Comitè Clínic Assessor">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut la teva consulta al Comitè Clínic Assessor. La coordinació del comitè la derivarà al membre més adequat. Rebràs una resposta en un termini orientatiu de 7-10 dies hàbils. Gràcies per la teva confiança!">
-    <input type="text" name="_honey" style="display:none">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
-    <input type="hidden" name="form_id" value="comite">
 
     <!-- 🔒 PANY D'ACCÉS -->
     <fieldset class="gate" id="access-gate">
       <legend>🔒 Accés per a associats</legend>
       <label style="color:#555;font-weight:normal;margin-bottom:15px">Aquest formulari és exclusiu per a associats d'ACAMPA. Introdueix el codi d'accés que t'ha facilitat l'entitat.</label>
-      <input type="text" id="access-code-input" placeholder="Ex: XXXXXXXXX" autocomplete="off" required>
+      <input type="text" id="access-code-input" placeholder="Ex: ASSOCIATxxxx" autocomplete="off" required>
       <button type="button" class="btn-unlock" id="unlock-btn">Accedir al formulari</button>
       <p id="error-msg"></p>
     </fieldset>
@@ -120,9 +114,9 @@ button:hover{background:#2980b9}
           <option value="Un familiar">Un familiar o persona cuidadora</option>
         </select>
 
-        <div id="familiar-detail" style="display:none">
-          <label class="main-label">Parentiu amb la persona afectada</label>
-          <input type="text" name="parentiu" placeholder="Ex: cònjuge, fill/a, germà/na...">
+        <div id="familiar-detail" style="display:none; margin-top: 12px;">
+          <label class="main-label">Parentiu amb la persona afectada *</label>
+          <input type="text" name="parentiu" placeholder="Ex: cònjuge, fill/a, germà/na..." required>
         </div>
 
         <label class="main-label">Malaltia de referència *</label>
@@ -218,7 +212,7 @@ button:hover{background:#2980b9}
         <legend>✍️ 6 · Signatura</legend>
         <label class="main-label">Escriu el teu nom complet com a signatura *</label>
         <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
-        <label class="main-label">Data de la consulta</label>
+        <label class="main-label">Data de la consulta *</label>
         <input type="date" name="data_consulta" id="data_consulta" required>
       </fieldset>
 
@@ -229,7 +223,8 @@ button:hover{background:#2980b9}
   <div class="footer">KIT-09 · Formulari de Consulta al Comitè Clínic Assessor · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
 </div>
 
-<script src="config.js?v=1.0"></script>
+<!-- CARREGA DEL FITXER EXTERN DE CONFIGURACIÓ -->
+<script src="config.js?v=2.0"></script>
 
 <script>
   // ============================================================
@@ -237,7 +232,9 @@ button:hover{background:#2980b9}
   // ============================================================
   const d = new Date();
   const dataField = document.getElementById('data_consulta');
-  if (dataField) dataField.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  if (dataField) {
+    dataField.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  }
 
   // ============================================================
   // 2. COMPTADOR DE CARÀCTERS
@@ -258,6 +255,11 @@ button:hover{background:#2980b9}
   if (consultaPerA && familiarDetail) {
     consultaPerA.addEventListener('change', function() {
       familiarDetail.style.display = this.value === 'Un familiar' ? 'block' : 'none';
+      // Fer el camp de parentiu obligatori només si es mostra
+      const parentiuInput = familiarDetail.querySelector('input');
+      if (parentiuInput) {
+        parentiuInput.required = (this.value === 'Un familiar');
+      }
     });
   }
 
@@ -293,13 +295,14 @@ button:hover{background:#2980b9}
         // Generar tags d'àmbit
         const ambitContainer = document.getElementById('mc-ambit');
         ambitContainer.innerHTML = '';
-        m.ambit.split('·').forEach(function(tag) {
-          const span = document.createElement('span');
-          span.className = 'tag';
-          span.textContent = tag.trim();
-          ambitContainer.appendChild(span);
-        });
-
+        if (m.ambit) {
+          m.ambit.split('·').forEach(function(tag) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = tag.trim();
+            ambitContainer.appendChild(span);
+          });
+        }
         memberCard.style.display = 'block';
       } else {
         memberCard.style.display = 'none';
@@ -323,12 +326,14 @@ button:hover{background:#2980b9}
       gate.style.display = 'none';
       content.style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log("✅ Accés concedit amb config.js");
     } else {
       const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
       errorMsg.textContent = msg;
       errorMsg.style.display = 'block';
       codeInput.value = '';
       codeInput.focus();
+      console.warn("⚠️ Codi rebutjat. Codi introduït:", inputCode);
     }
   }
 

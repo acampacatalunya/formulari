@@ -52,8 +52,8 @@ button:hover{background:#2980b9}
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_autoresponse" value="Gràcies pel teu interès en ACAMPA! Hem rebut correctament la teva fitxa de contacte. Ens posarem en contacte amb tu molt aviat per informar-te sobre les nostres activitats i projectes.">
-    <input type="text" name="_honey" style="display:none">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
+    <!-- Parany anti-spam millorat -->
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
     <input type="hidden" name="form_id" value="contacte">
 
     <div class="info">
@@ -82,7 +82,7 @@ button:hover{background:#2980b9}
           <input type="tel" name="telefon" placeholder="Opcional">
         </div>
         <div>
-          <label class="main-label">Correu electrònic *</label>
+          <label class="main-label">Correu electrònic (confirmació) *</label>
           <input type="email" name="email_confirm" required placeholder="Confirma el teu correu">
         </div>
       </div>
@@ -92,7 +92,7 @@ button:hover{background:#2980b9}
     <fieldset>
       <legend>🔗 2 · Vinculació amb la malaltia</legend>
       <label class="main-label">La meva vinculació amb la malaltia és: *</label>
-      <select name="vinculacio" required>
+      <select name="vinculacio" id="vinculacio" required>
         <option value="">— Selecciona —</option>
         <option value="Persona afectada">Persona afectada</option>
         <option value="Familiar">Familiar</option>
@@ -101,9 +101,9 @@ button:hover{background:#2980b9}
         <option value="Altre">Altre</option>
       </select>
 
-      <div id="vinculacio-altre" style="display:none">
-        <label class="main-label">Si has triat "Altre", si us plau, especifica:</label>
-        <input type="text" name="vinculacio_altre_detall" placeholder="Ex: amic/iga, veí/na, estudiant...">
+      <div id="vinculacio-altre" style="display:none; margin-top: 12px;">
+        <label class="main-label">Si has triat "Altre", si us plau, especifica: *</label>
+        <input type="text" name="vinculacio_altre_detall" id="vinculacio_altre_detall" placeholder="Ex: amic/iga, veí/na, estudiant...">
       </div>
     </fieldset>
 
@@ -143,7 +143,7 @@ button:hover{background:#2980b9}
       <div class="checks-grid">
         <label class="check">
           <input type="checkbox" name="col_professio" value="SÍ">
-          <span>La meva professió i/o experiència que podrien ser útils per a l'associació</span>
+          <span>La meva professió i/o experiència que podrien ser útils</span>
         </label>
         <label class="check">
           <input type="checkbox" name="col_disposicio" value="SÍ">
@@ -188,11 +188,11 @@ button:hover{background:#2980b9}
 
     <!-- 5. EXPECTATIVES -->
     <fieldset>
-      <legend>💭 5 · Expectatives</legend>
+      <legend>💭 5 · Expectatives i detall</legend>
       <label class="main-label">Què espereu de l'Associació?</label>
       <textarea name="expectatives" placeholder="Explica què t'agradaria rebre o trobar a ACAMPA..."></textarea>
 
-      <label class="main-label">En què creieu que podeu ajudar o col·laborar? (detall)</label>
+      <label class="main-label">Detalla com creus que pots ajudar o col·laborar:</label>
       <textarea name="ajuda_detall" placeholder="Si vols, explica amb més detall com creus que podries ajudar..."></textarea>
     </fieldset>
 
@@ -258,7 +258,7 @@ button:hover{background:#2980b9}
       <legend>✍️ 9 · Signatura</legend>
       <label class="main-label">Nom complet com a signatura *</label>
       <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
-      <label class="main-label">Data</label>
+      <label class="main-label">Data *</label>
       <input type="date" name="data_signatura" id="data_signatura" required>
     </fieldset>
 
@@ -273,17 +273,32 @@ button:hover{background:#2980b9}
 </div>
 
 <script>
-  // Data d'avui automàtica
+  // ============================================================
+  // 1. DATA D'AVUI AUTOMÀTICA
+  // ============================================================
   const d = new Date();
   const dataSignatura = document.getElementById('data_signatura');
-  if (dataSignatura) dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  if (dataSignatura) {
+    dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  }
 
-  // Mostrar/amagar camp "Altre" a vinculació
-  const vinculacio = document.querySelector('select[name="vinculacio"]');
+  // ============================================================
+  // 2. MOSTRAR/AMAGAR CAMP "ALTRE" I GESTIONAR 'REQUIRED'
+  // ============================================================
+  const vinculacio = document.getElementById('vinculacio');
   const vinculacioAltre = document.getElementById('vinculacio-altre');
-  if (vinculacio && vinculacioAltre) {
+  const vinculacioAltreInput = document.getElementById('vinculacio_altre_detall');
+
+  if (vinculacio && vinculacioAltre && vinculacioAltreInput) {
     vinculacio.addEventListener('change', function() {
-      vinculacioAltre.style.display = this.value === 'Altre' ? 'block' : 'none';
+      if (this.value === 'Altre') {
+        vinculacioAltre.style.display = 'block';
+        vinculacioAltreInput.required = true; // Es torna obligatori
+      } else {
+        vinculacioAltre.style.display = 'none';
+        vinculacioAltreInput.required = false; // Deixa de ser obligatori
+        vinculacioAltreInput.value = ''; // Neteja el contingut si s'amaga
+      }
     });
   }
 </script>

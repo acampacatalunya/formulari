@@ -19,7 +19,8 @@ label.main-label{display:block;font-size:.86rem;font-weight:600;margin:12px 0 4p
 input[type=text],input[type=email],input[type=date],select{width:100%;padding:10px 12px;border:1px solid #aab7b8;border-radius:6px;font-size:.95rem;background:#fdfefe}
 .row{display:flex;gap:16px}.row>div{flex:1}
 .check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
-.check input{margin-top:3px;flex-shrink:0}
+.check input{margin-top:3px;flex-shrink:0;cursor:pointer}
+.check label{cursor:pointer}
 .info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
 .warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
 button{width:100%;background:#8e44ad;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
@@ -43,21 +44,22 @@ button:hover{background:#9b59b6}
     <div class="code">MAN-ETI-006 · Annex al Codi Ètic · v1.0</div>
   </div>
 
-  <form method="POST">
+  <!-- L'acció està hardcodada com a fallback de seguretat per si config.js falla -->
+  <form action="https://formsubmit.co/849eac42396b113846283faae41e979e" method="POST">
     <input type="hidden" name="_subject" value="📱 Nou Codi de Conducta en Xarxes Socials signat">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el teu Codi de Conducta en Xarxes Socials. Gràcies per representar l'entitat amb responsabilitat!">
-    <input type="text" name="_honey" style="display:none">
+    <!-- Parany anti-spam millorat -->
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
     <input type="hidden" name="formulari" value="Codi de Conducta en Xarxes Socials (MAN-ETI-006)">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
     <input type="hidden" name="form_id" value="xarxes">
 
     <!-- 🔒 PANY D'ACCÉS -->
     <fieldset class="gate" id="access-gate">
       <legend>🔒 Accés Restringit</legend>
       <label style="color:#555;font-weight:normal;margin-bottom:15px;">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat ACAMPA.</label>
-      <input type="text" id="access-code-input" placeholder="Codi d'accés" autocomplete="off" required>
+      <input type="text" id="access-code-input" placeholder="Ex: VOLUNTARIAT26" autocomplete="off" required>
       <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
       <p id="error-msg"></p>
     </fieldset>
@@ -70,8 +72,14 @@ button:hover{background:#9b59b6}
         <label class="main-label">Nom i cognoms *</label>
         <input type="text" name="nom_cognoms" required>
         <div class="row">
-          <div><label class="main-label">DNI / NIF / NIE *</label><input type="text" name="dni" required></div>
-          <div><label class="main-label">Correu electrònic *</label><input type="email" name="email" required></div>
+          <div>
+            <label class="main-label">DNI / NIF / NIE *</label>
+            <input type="text" name="dni" required>
+          </div>
+          <div>
+            <label class="main-label">Correu electrònic *</label>
+            <input type="email" name="email" required>
+          </div>
         </div>
         <div class="row">
           <div>
@@ -88,8 +96,8 @@ button:hover{background:#9b59b6}
           <div>
             <label class="main-label">Gestiona comptes oficials d'ACAMPA?</label>
             <select name="gestiona_comptes">
-              <option>No</option>
-              <option>Sí</option>
+              <option value="No">No</option>
+              <option value="Sí">Sí</option>
             </select>
           </div>
         </div>
@@ -97,25 +105,53 @@ button:hover{background:#9b59b6}
 
       <fieldset>
         <legend>2 · Principis generals de conducta digital (SEC-015)</legend>
-        <label class="check"><input type="checkbox" name="p_veracitat" value="SÍ" required><span><strong>Veracitat:</strong> compartir informació contrastada i no difondre notícies falses. *</span></label>
-        <label class="check"><input type="checkbox" name="p_respecte" value="SÍ" required><span><strong>Respecte:</strong> tractar totes les persones amb respecte, fins i tot en el desacord. *</span></label>
-        <label class="check"><input type="checkbox" name="p_coherencia" value="SÍ" required><span><strong>Coherència:</strong> reflectir els valors d'ACAMPA en tota la comunicació digital. *</span></label>
-        <label class="check"><input type="checkbox" name="p_inclusiu" value="SÍ" required><span><strong>Llenguatge inclusiu:</strong> utilitzar un llenguatge respectuós i no discriminatori. *</span></label>
-        <label class="check"><input type="checkbox" name="p_empatia" value="SÍ" required><span><strong>Empatia:</strong> recordar que darrere de cada pantalla hi ha una persona. *</span></label>
+        <label class="check">
+          <input type="checkbox" name="p_veracitat" value="SÍ" required>
+          <span><strong>Veracitat:</strong> compartir informació contrastada i no difondre notícies falses. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="p_respecte" value="SÍ" required>
+          <span><strong>Respecte:</strong> tractar totes les persones amb respecte, fins i tot en el desacord. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="p_coherencia" value="SÍ" required>
+          <span><strong>Coherència:</strong> reflectir els valors d'ACAMPA en tota la comunicació digital. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="p_inclusiu" value="SÍ" required>
+          <span><strong>Llenguatge inclusiu:</strong> utilitzar un llenguatge respectuós i no discriminatori. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="p_empatia" value="SÍ" required>
+          <span><strong>Empatia:</strong> recordar que darrere de cada pantalla hi ha una persona. *</span>
+        </label>
       </fieldset>
 
       <fieldset>
         <legend>3 · Comunicació personal</legend>
         <div class="info">Quan em comunico en xarxes socials a títol personal però se'm pot associar a ACAMPA, em comprometo a distingir entre opinions personals i posicionaments oficials, i a no fer declaracions en nom de l'entitat sense autorització.</div>
-        <label class="check"><input type="checkbox" name="c_no_difondre_interna" value="SÍ" required><span>No difondre informació interna o confidencial de l'entitat. *</span></label>
-        <label class="check"><input type="checkbox" name="c_no_dades_beneficiaries" value="SÍ" required><span>No publicar dades personals o de salut de persones beneficiàries. *</span></label>
-        <label class="check"><input type="checkbox" name="c_consentiment_imatges" value="SÍ" required><span>No compartir imatges de persones sense el seu consentiment exprés. *</span></label>
-        <label class="check"><input type="checkbox" name="c_no_desacreditar" value="SÍ" required><span>No desacreditar públicament ACAMPA; les discrepàncies es resolen pels canals interns. *</span></label>
+        <label class="check">
+          <input type="checkbox" name="c_no_difondre_interna" value="SÍ" required>
+          <span>No difondre informació interna o confidencial de l'entitat. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="c_no_dades_beneficiaries" value="SÍ" required>
+          <span>No publicar dades personals o de salut de persones beneficiàries. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="c_consentiment_imatges" value="SÍ" required>
+          <span>No compartir imatges de persones sense el seu consentiment exprés. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="c_no_desacreditar" value="SÍ" required>
+          <span>No desacreditar públicament ACAMPA; les discrepàncies es resolen pels canals interns. *</span>
+        </label>
       </fieldset>
 
       <fieldset>
         <legend>4 · Prohibicions específiques</legend>
-        <div class="prohibitions">Queda <strong>expressament prohibit</strong>:
+        <div class="prohibitions">
+          Queda <strong>expressament prohibit</strong>:
           <ul>
             <li>Publicar informació falsa en nom d'ACAMPA.</li>
             <li>Difondre dades de salut de beneficiaris.</li>
@@ -130,10 +166,13 @@ button:hover{background:#9b59b6}
       <fieldset>
         <legend>5 · Acceptació i signatura</legend>
         <div class="warn">⚠️ L'incompliment d'aquest Codi es gestionarà d'acord amb el règim disciplinari del Codi Ètic (SEC-018). Les conductes que constitueixin delicte seran comunicades a les autoritats competents.</div>
-        <label class="check"><input type="checkbox" name="accepta_codi" value="SÍ" required><span>He llegit i comprès el Codi de Conducta en Xarxes Socials i em comprometo a respectar-lo. *</span></label>
+        <label class="check">
+          <input type="checkbox" name="accepta_codi" value="SÍ" required>
+          <span>He llegit i comprès el Codi de Conducta en Xarxes Socials i em comprometo a respectar-lo. *</span>
+        </label>
         <label class="main-label" style="margin-top:16px;">Escriu el teu nom i cognoms com a signatura *</label>
         <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
-        <label class="main-label">Data de signatura</label>
+        <label class="main-label">Data de signatura *</label>
         <input type="date" name="data_signatura" id="data_signatura" required>
       </fieldset>
 
@@ -144,16 +183,66 @@ button:hover{background:#9b59b6}
   <div class="footer">MAN-ETI-006 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
 </div>
 
-<script src="config.js"></script>
-<script>
-  (function(){ const f=document.querySelector('form'); if(f&&typeof DEFAULT_EMAIL!=='undefined') f.action='https://formsubmit.co/'+DEFAULT_EMAIL; })();
-  const d=new Date(); const ds=document.getElementById('data_signatura');
-  if(ds) ds.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+<!-- CARREGA DEL FITXER EXTERN DE CONFIGURACIÓ -->
+<script src="config.js?v=2.0"></script>
 
-  const unlockBtn=document.getElementById('unlock-btn'), codeInput=document.getElementById('access-code-input'), errorMsg=document.getElementById('error-msg'), gate=document.getElementById('access-gate'), content=document.getElementById('form-content');
-  function tryUnlock(){ const c=codeInput.value.trim().toUpperCase(); if(typeof ACCESS_CODES!=='undefined'&&ACCESS_CODES.map(x=>x.toUpperCase()).includes(c)){ gate.style.display='none'; content.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); } else { errorMsg.textContent=(typeof ERROR_MSG!=='undefined')?ERROR_MSG:"Codi incorrecte."; errorMsg.style.display='block'; codeInput.value=''; codeInput.focus(); } }
-  if(unlockBtn) unlockBtn.addEventListener('click',tryUnlock);
-  if(codeInput) codeInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+<script>
+  // ============================================================
+  // 0. ACTUALITZACIÓ SEGURA DE L'ACCIÓ DEL FORMULARI
+  // ============================================================
+  (function() {
+    const form = document.querySelector('form');
+    if (form && typeof DEFAULT_EMAIL !== 'undefined') {
+      form.action = 'https://formsubmit.co/' + DEFAULT_EMAIL;
+    }
+  })();
+
+  // ============================================================
+  // 1. DATA D'AVUI AUTOMÀTICA
+  // ============================================================
+  const d = new Date();
+  const dataSignatura = document.getElementById('data_signatura');
+  if (dataSignatura) {
+    dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  }
+
+  // ============================================================
+  // 2. PANY D'ACCÉS
+  // ============================================================
+  const unlockBtn = document.getElementById('unlock-btn');
+  const codeInput = document.getElementById('access-code-input');
+  const errorMsg = document.getElementById('error-msg');
+  const gate = document.getElementById('access-gate');
+  const content = document.getElementById('form-content');
+
+  function tryUnlock() {
+    const inputCode = codeInput.value.trim().toUpperCase();
+    
+    // Comprovació segura: assegura que ACCESS_CODES existeix abans de fer .map()
+    if (typeof ACCESS_CODES !== 'undefined' && ACCESS_CODES.map(x => x.toUpperCase()).includes(inputCode)) {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log("✅ Accés concedit amb config.js");
+    } else {
+      const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      codeInput.value = '';
+      codeInput.focus();
+      console.warn("⚠️ Codi rebutjat. Codi introduït:", inputCode);
+    }
+  }
+
+  if (unlockBtn) unlockBtn.addEventListener('click', tryUnlock);
+  if (codeInput) {
+    codeInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        tryUnlock();
+      }
+    });
+  }
 </script>
 </body>
 </html>

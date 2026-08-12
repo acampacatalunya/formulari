@@ -20,7 +20,8 @@ input[type=text],input[type=email],input[type=date],select,textarea{width:100%;p
 textarea{min-height:60px;resize:vertical}
 .row{display:flex;gap:16px}.row>div{flex:1}
 .check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:.88rem;font-weight:400}
-.check input{margin-top:3px;flex-shrink:0}
+.check input{margin-top:3px;flex-shrink:0;cursor:pointer}
+.check label{cursor:pointer}
 .info{background:#eaf2f8;border-left:4px solid #2980b9;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
 .warn{background:#fef9e7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:6px;font-size:.86rem;margin:12px 0}
 button{width:100%;background:#1a5276;color:#fff;border:none;padding:14px;font-size:1rem;font-weight:700;border-radius:8px;cursor:pointer;margin-top:6px}
@@ -48,21 +49,21 @@ button:hover{background:#2980b9}
     <div class="code">MAN-ETI-003 · Declaració anual · v1.0</div>
   </div>
 
-  <form method="POST">
+  <!-- L'acció està hardcodada com a fallback de seguretat per si config.js falla -->
+  <form action="https://formsubmit.co/849eac42396b113846283faae41e979e" method="POST">
     <input type="hidden" name="_subject" value="⚖️ Nova Declaració de Conflictes d'Interessos">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament la teva Declaració de Conflictes d'Interessos. Gràcies per la teva transparència!">
-    <input type="text" name="_honey" style="display:none">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
     <input type="hidden" name="formulari" value="Declaració de Conflictes d'Interessos (MAN-ETI-003)">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
     <input type="hidden" name="form_id" value="conflictes">
 
     <!-- 🔒 PANY D'ACCÉS -->
     <fieldset class="gate" id="access-gate">
       <legend>🔒 Accés Restringit</legend>
       <label style="color:#555;font-weight:normal;margin-bottom:15px;">Aquest formulari és d'ús intern. Introdueix el codi d'accés que t'ha facilitat ACAMPA.</label>
-      <input type="text" id="access-code-input" placeholder="Codi d'accés" autocomplete="off" required>
+      <input type="text" id="access-code-input" placeholder="Ex: JUNTA2026" autocomplete="off" required>
       <button type="button" class="btn-unlock" id="unlock-btn">Desbloquejar formulari</button>
       <p id="error-msg"></p>
     </fieldset>
@@ -75,18 +76,30 @@ button:hover{background:#2980b9}
         <label class="main-label">Nom i cognoms *</label>
         <input type="text" name="nom_cognoms" required>
         <div class="row">
-          <div><label class="main-label">DNI / NIF / NIE *</label><input type="text" name="dni" required></div>
-          <div><label class="main-label">Càrrec / Funció *</label><input type="text" name="carrec" required placeholder="Ex: Vocal, Voluntari/a..."></div>
+          <div>
+            <label class="main-label">DNI / NIF / NIE *</label>
+            <input type="text" name="dni" required>
+          </div>
+          <div>
+            <label class="main-label">Càrrec / Funció *</label>
+            <input type="text" name="carrec" required placeholder="Ex: Vocal, Voluntari/a...">
+          </div>
         </div>
         <div class="row">
-          <div><label class="main-label">Correu electrònic *</label><input type="email" name="email" required></div>
-          <div><label class="main-label">Any de la declaració *</label><input type="text" name="any_declaracio" value="2026" required></div>
+          <div>
+            <label class="main-label">Correu electrònic *</label>
+            <input type="email" name="email" required>
+          </div>
+          <div>
+            <label class="main-label">Any de la declaració *</label>
+            <input type="text" name="any_declaracio" value="2026" required>
+          </div>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>2 · Interessos econòmics</legend>
-        <div class="info">Marca la opció que correspongui. Si marques "Sí", detalla-ho breument (SEC-011).</div>
+        <div class="info">Marca l'opció que correspongui. Si marques "Sí", detalla-ho breument (SEC-011).</div>
         <div class="q-block">
           <div class="q-text">Tens interessos econòmics o participacions en empreses proveïdores d'ACAMPA?</div>
           <div class="radio-group">
@@ -154,12 +167,22 @@ button:hover{background:#2980b9}
       <fieldset>
         <legend>6 · Compromisos i signatura</legend>
         <div class="warn">⚠️ La no declaració d'un conflicte d'interessos conegut es considera una <strong>infracció greu</strong> segons el Codi Ètic (SEC-018).</div>
-        <label class="check"><input type="checkbox" name="compromis_declarar" value="SÍ" required><span>Em comprometo a declarar immediatament qualsevol nou conflicte que sorgeixi durant l'any. *</span></label>
-        <label class="check"><input type="checkbox" name="compromis_abstencio" value="SÍ" required><span>Em comprometo a abstenir-me de participar en deliberacions i votacions on hi hagi conflicte d'interessos. *</span></label>
-        <label class="check"><input type="checkbox" name="declaracio_verac" value="SÍ" required><span>Declaro sota la meva responsabilitat que la informació proporcionada és veraç i completa. *</span></label>
+        <label class="check">
+          <input type="checkbox" name="compromis_declarar" value="SÍ" required>
+          <span>Em comprometo a declarar immediatament qualsevol nou conflicte que sorgeixi durant l'any. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="compromis_abstencio" value="SÍ" required>
+          <span>Em comprometo a abstenir-me de participar en deliberacions i votacions on hi hagi conflicte d'interessos. *</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="declaracio_verac" value="SÍ" required>
+          <span>Declaro sota la meva responsabilitat que la informació proporcionada és veraç i completa. *</span>
+        </label>
+        
         <label class="main-label" style="margin-top:16px;">Escriu el teu nom i cognoms com a signatura *</label>
         <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
-        <label class="main-label">Data de signatura</label>
+        <label class="main-label">Data de signatura *</label>
         <input type="date" name="data_signatura" id="data_signatura" required>
       </fieldset>
 
@@ -170,18 +193,81 @@ button:hover{background:#2980b9}
   <div class="footer">MAN-ETI-003 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
 </div>
 
-<script src="config.js"></script>
+<!-- CARREGA DEL FITXER EXTERN DE CONFIGURACIÓ -->
+<script src="config.js?v=2.0"></script>
+
 <script>
-  (function(){ const f=document.querySelector('form'); if(f&&typeof DEFAULT_EMAIL!=='undefined') f.action='https://formsubmit.co/'+DEFAULT_EMAIL; })();
-  const d=new Date(); const ds=document.getElementById('data_signatura');
-  if(ds) ds.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+  // ============================================================
+  // 0. ACTUALITZACIÓ SEGURA DE L'ACCIÓ DEL FORMULARI
+  // ============================================================
+  (function() {
+    const form = document.querySelector('form');
+    if (form && typeof DEFAULT_EMAIL !== 'undefined') {
+      form.action = 'https://formsubmit.co/' + DEFAULT_EMAIL;
+    }
+  })();
 
-  function toggleDetail(id,show){ const el=document.getElementById(id); el.style.display=show?'block':'none'; if(!show)el.value=''; if(show)el.focus(); }
+  // ============================================================
+  // 1. DATA D'AVUI AUTOMÀTICA
+  // ============================================================
+  const d = new Date();
+  const dataSignatura = document.getElementById('data_signatura');
+  if (dataSignatura) {
+    dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  }
 
-  const unlockBtn=document.getElementById('unlock-btn'), codeInput=document.getElementById('access-code-input'), errorMsg=document.getElementById('error-msg'), gate=document.getElementById('access-gate'), content=document.getElementById('form-content');
-  function tryUnlock(){ const c=codeInput.value.trim().toUpperCase(); if(typeof ACCESS_CODES!=='undefined'&&ACCESS_CODES.map(x=>x.toUpperCase()).includes(c)){ gate.style.display='none'; content.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); } else { errorMsg.textContent=(typeof ERROR_MSG!=='undefined')?ERROR_MSG:"Codi incorrecte."; errorMsg.style.display='block'; codeInput.value=''; codeInput.focus(); } }
-  if(unlockBtn) unlockBtn.addEventListener('click',tryUnlock);
-  if(codeInput) codeInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+  // ============================================================
+  // 2. MOSTRAR / AMAGAR CAMPS DE DETALL
+  // ============================================================
+  function toggleDetail(id, show) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = show ? 'block' : 'none';
+      if (!show) {
+        el.value = ''; // Netejar el camp si s'amaga
+      } else {
+        el.focus(); // Posar el focus si es mostra
+      }
+    }
+  }
+
+  // ============================================================
+  // 3. PANY D'ACCÉS
+  // ============================================================
+  const unlockBtn = document.getElementById('unlock-btn');
+  const codeInput = document.getElementById('access-code-input');
+  const errorMsg = document.getElementById('error-msg');
+  const gate = document.getElementById('access-gate');
+  const content = document.getElementById('form-content');
+
+  function tryUnlock() {
+    const inputCode = codeInput.value.trim().toUpperCase();
+    
+    // Comprovació segura: assegura que ACCESS_CODES existeix abans de fer .map()
+    if (typeof ACCESS_CODES !== 'undefined' && ACCESS_CODES.map(x => x.toUpperCase()).includes(inputCode)) {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log("✅ Accés concedit amb config.js");
+    } else {
+      const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      codeInput.value = '';
+      codeInput.focus();
+      console.warn("⚠️ Codi rebutjat. Codi introduït:", inputCode);
+    }
+  }
+
+  if (unlockBtn) unlockBtn.addEventListener('click', tryUnlock);
+  if (codeInput) {
+    codeInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        tryUnlock();
+      }
+    });
+  }
 </script>
 </body>
 </html>

@@ -58,7 +58,6 @@ button:hover{background:#2980b9}
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_autoresponse" value="ACAMPA ha rebut correctament el Checklist d'Assegurança RC. Gràcies per la teva gestió!">
     <input type="text" name="_honey" style="display:none">
-    <!-- 👇 AFEGEIX AQUÍ LA LÍNIA NOVA -->
     <input type="hidden" name="form_id" value="checkarc">
 
     <!-- 🔒 PANY D'ACCÉS -->
@@ -130,7 +129,6 @@ button:hover{background:#2980b9}
       <!-- Secció 2: Raons per Contractar-la -->
       <fieldset>
         <legend>⚖️ 2. Raons per Contractar-la</legend>
-        
         <div class="subsection">
           <div class="subsection-title">Raons legals</div>
           <div class="check">
@@ -146,7 +144,6 @@ button:hover{background:#2980b9}
             <label>Incloure la previsió als Estatuts d'ACAMPA</label>
           </div>
         </div>
-
         <div class="subsection">
           <div class="subsection-title">Raons de protecció</div>
           <div class="check">
@@ -175,7 +172,6 @@ button:hover{background:#2980b9}
       <!-- Secció 3: Cobertures i Exclusions -->
       <fieldset>
         <legend>📋 3. Cobertures i Exclusions</legend>
-        
         <div class="subsection">
           <div class="subsection-title">✅ Què COBREIX (habitualment)</div>
           <div class="check">
@@ -219,7 +215,6 @@ button:hover{background:#2980b9}
             <label>RC Específica: Vehicles particulars per voluntariat</label>
           </div>
         </div>
-
         <div class="subsection">
           <div class="subsection-title">❌ Què NO COBREIX (habitualment)</div>
           <div class="check">
@@ -260,7 +255,6 @@ button:hover{background:#2980b9}
       <!-- Secció 4: Procés de Contractació -->
       <fieldset>
         <legend>📋 4. Procés de Contractació</legend>
-        
         <div class="subsection">
           <div class="subsection-title">🎯 Recomanació per a ACAMPA</div>
           <div class="check">
@@ -284,7 +278,6 @@ button:hover{background:#2980b9}
             <label>Cost assequible (300-400 €/any)</label>
           </div>
         </div>
-
         <div class="subsection">
           <div class="subsection-title">📋 7 Passos per Contractar</div>
           <div class="check">
@@ -316,7 +309,6 @@ button:hover{background:#2980b9}
             <label>PAS 7: Arxiu i registre (calendari de renovació)</label>
           </div>
         </div>
-
         <div class="subsection">
           <div class="subsection-title">📄 Documentació necessària</div>
           <div class="check">
@@ -417,7 +409,6 @@ button:hover{background:#2980b9}
           <input type="checkbox" name="sinistre_8" value="PAS 8: Anàlisi i prevenció (evitar incidents similars)">
           <label>PAS 8: Anàlisi i prevenció (evitar incidents similars)</label>
         </div>
-
         <div class="warn">
           <strong>⚠️ MOLT IMPORTANT:</strong>
           <ul style="margin-top:8px;padding-left:18px">
@@ -563,7 +554,7 @@ button:hover{background:#2980b9}
         <legend>✍️ Signatura</legend>
         <label class="main-label">Nom i cognoms com a signatura *</label>
         <input type="text" name="signatura" required placeholder="Ex.: Maria Puig i Serra">
-        <label class="main-label">Data de signatura</label>
+        <label class="main-label">Data de signatura *</label>
         <input type="date" name="data_signatura" id="data_signatura" required>
       </fieldset>
 
@@ -574,17 +565,25 @@ button:hover{background:#2980b9}
   <div class="footer">MAN-SEG-001 · v1.0 · ACAMPA – Associació Catalana de Malalties de Parkinson Atípiques</div>
 </div>
 
-<script src="config.js?v=1.0"></script>
+<!-- CARREGA DEL FITXER EXTERN DE CONFIGURACIÓ (v=2.0 per evitar memòria cau) -->
+<script src="config.js?v=2.0"></script>
 
 <script>
-  // Data d'avui automàtica
+  // ============================================================
+  // 1. DATA D'AVUI AUTOMÀTICA
+  // ============================================================
   const d = new Date();
   const dataRevisio = document.getElementById('data_revisio');
   const dataSignatura = document.getElementById('data_signatura');
-  if (dataRevisio) dataRevisio.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-  if (dataSignatura) dataSignatura.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  
+  const todayISO = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  
+  if (dataRevisio) dataRevisio.value = todayISO;
+  if (dataSignatura) dataSignatura.value = todayISO;
 
-  // Barra de progrés
+  // ============================================================
+  // 2. BARRA DE PROGRÉS
+  // ============================================================
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const progressFill = document.getElementById('progress-fill');
   const progressText = document.getElementById('progress-text');
@@ -592,14 +591,17 @@ button:hover{background:#2980b9}
 
   function updateProgress() {
     const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-    const percent = Math.round((checked / totalCheckboxes) * 100);
+    const percent = totalCheckboxes > 0 ? Math.round((checked / totalCheckboxes) * 100) : 0;
     progressFill.style.width = percent + '%';
     progressText.textContent = percent + '% Completat';
   }
 
   checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+  updateProgress(); // Inicialitzar al 0%
 
-  // Pany d'accés
+  // ============================================================
+  // 3. PANY D'ACCÉS (utilitza directament les variables de config.js)
+  // ============================================================
   const unlockBtn = document.getElementById('unlock-btn');
   const codeInput = document.getElementById('access-code-input');
   const errorMsg = document.getElementById('error-msg');
@@ -609,16 +611,19 @@ button:hover{background:#2980b9}
   function tryUnlock() {
     const inputCode = codeInput.value.trim().toUpperCase();
     
+    // Utilitzem directament ACCESS_CODES i ERROR_MSG definits a config.js
     if (typeof ACCESS_CODES !== 'undefined' && ACCESS_CODES.includes(inputCode)) {
       gate.style.display = 'none';
       content.style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log("✅ Accés concedit amb config.js");
     } else {
       const msg = (typeof ERROR_MSG !== 'undefined') ? ERROR_MSG : "Codi incorrecte.";
       errorMsg.textContent = msg;
       errorMsg.style.display = 'block';
       codeInput.value = '';
       codeInput.focus();
+      console.warn("⚠️ Codi rebutjat. Codi introduït:", inputCode);
     }
   }
 
